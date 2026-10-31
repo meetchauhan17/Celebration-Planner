@@ -22,7 +22,7 @@ export function parsePhoneLink(contact?: string): string | null {
   if (digits.length >= 7 && digits.length <= 15) {
     const isPurePhone = /^[+\s()0-9-]+$/.test(trimmed);
     if (isPurePhone) {
-      return digits.startsWith("+") ? digits : `+${digits.replace(/^0+/, "")}`;
+      return trimmed.startsWith("+") ? `+${digits}` : `+${digits.replace(/^0+/, "")}`;
     }
   }
   return null;
@@ -123,8 +123,15 @@ export const VendorListingRow: React.FC<VendorListingRowProps> = ({
           value={vendor.quoteAmount ?? ""}
           placeholder="Enter quote"
           onChange={(e) => {
-            const val = e.target.value.trim() === "" ? undefined : Number(e.target.value);
-            onUpdateVendor({ ...vendor, quoteAmount: val });
+            const raw = e.target.value.trim();
+            if (raw === "") {
+              onUpdateVendor({ ...vendor, quoteAmount: undefined });
+            } else {
+              const num = Number(raw);
+              if (!isNaN(num) && num >= 0) {
+                onUpdateVendor({ ...vendor, quoteAmount: num });
+              }
+            }
           }}
           className="np-table-input"
           style={{ width: "100%" }}

@@ -33,6 +33,7 @@ export const EventListingItem: React.FC<EventListingItemProps> = ({
       <h3 className="np-event-listing-title" style={{ margin: "0 0 4px 0" }}>
         <Link
           href={`/events/${brief.id}`}
+          prefetch={false}
           className="np-event-title-link"
           style={{
             color: "var(--dp-color-ink)",

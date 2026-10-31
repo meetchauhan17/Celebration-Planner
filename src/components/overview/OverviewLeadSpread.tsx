@@ -127,6 +127,7 @@ export const OverviewLeadSpread: React.FC<OverviewLeadSpreadProps> = ({ event })
                 <div style={{ marginTop: "4px" }}>
                   <Link
                     href={timelineHref}
+                    prefetch={false}
                     className="np-button-link text-compact"
                     style={{ fontWeight: "var(--dp-typography-label-weight)" }}
                   >

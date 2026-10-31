@@ -41,6 +41,16 @@ export function checkRateLimit(
   windowMs: number = DEFAULT_RATE_WINDOW_MS
 ): { allowed: boolean; remaining: number; resetTime: number } {
   const now = Date.now();
+
+  // Purge expired records if the store grows large to prevent memory leaks
+  if (rateLimitStore.size > 500) {
+    rateLimitStore.forEach((value, key) => {
+      if (now >= value.resetTime) {
+        rateLimitStore.delete(key);
+      }
+    });
+  }
+
   const record = rateLimitStore.get(ip);
 
   if (record && now < record.resetTime) {

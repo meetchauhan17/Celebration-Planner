@@ -153,8 +153,15 @@ export const BudgetTable: React.FC<BudgetTableProps> = ({
                         value={line.actualAmount ?? ""}
                         placeholder="0"
                         onChange={(e) => {
-                          const val = e.target.value.trim() === "" ? undefined : parseInt(e.target.value, 10);
-                          onUpdateActual(line.category, val);
+                          const raw = e.target.value.trim();
+                          if (raw === "") {
+                            onUpdateActual(line.category, undefined);
+                            return;
+                          }
+                          const val = parseInt(raw, 10);
+                          if (!isNaN(val) && val >= 0) {
+                            onUpdateActual(line.category, val);
+                          }
                         }}
                         className="np-table-input"
                         aria-label={`Actual spend for ${categoryName}`}

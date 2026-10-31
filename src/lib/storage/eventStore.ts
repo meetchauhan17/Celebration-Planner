@@ -12,6 +12,7 @@ const StoredEventsSchema = z.array(PlannedEventSchema);
 const listeners = new Set<() => void>();
 let cachedEvents: PlannedEvent[] = [];
 let cacheInitialized = false;
+let lastKnownStorageString: string | null = null;
 const EMPTY_EVENTS: PlannedEvent[] = [];
 
 function toError(e: unknown, code: StorageErrorCode, msg: string): StorageError {
@@ -36,6 +37,10 @@ function syncCache(): void {
   if (typeof window === "undefined") return;
   try {
     const raw = window.localStorage.getItem(STORAGE_KEY);
+    if (raw === lastKnownStorageString && cacheInitialized) {
+      return;
+    }
+    lastKnownStorageString = raw;
     if (!raw) {
       cachedEvents = EMPTY_EVENTS;
       cacheInitialized = true;
@@ -52,6 +57,7 @@ function syncCache(): void {
   } catch {
     const raw = window.localStorage.getItem(STORAGE_KEY);
     if (raw) quarantineAndReset(raw);
+    lastKnownStorageString = null;
     cachedEvents = EMPTY_EVENTS;
   }
   cacheInitialized = true;
@@ -61,12 +67,23 @@ function notify(): void {
   listeners.forEach((l) => l());
 }
 
+if (typeof window !== "undefined") {
+  window.addEventListener("storage", (e) => {
+    if (e.key === STORAGE_KEY) {
+      syncCache();
+      notify();
+    }
+  });
+}
+
 function writeEvents(events: PlannedEvent[]): Result<PlannedEvent[]> {
   if (typeof window === "undefined") {
     return err({ code: "UNAVAILABLE", message: "window is undefined" });
   }
   try {
-    window.localStorage.setItem(STORAGE_KEY, JSON.stringify(events));
+    const serialized = JSON.stringify(events);
+    window.localStorage.setItem(STORAGE_KEY, serialized);
+    lastKnownStorageString = serialized;
     cachedEvents = events;
     notify();
     return ok(events);
@@ -78,6 +95,7 @@ function writeEvents(events: PlannedEvent[]): Result<PlannedEvent[]> {
 export function resetCacheForTesting(): void {
   cachedEvents = EMPTY_EVENTS;
   cacheInitialized = false;
+  lastKnownStorageString = null;
   listeners.clear();
 }
 
@@ -135,6 +153,7 @@ export function clearAllEvents(): Result<boolean> {
   }
   try {
     window.localStorage.removeItem(STORAGE_KEY);
+    lastKnownStorageString = null;
     cachedEvents = EMPTY_EVENTS;
     notify();
     return ok(true);
