@@ -1,0 +1,26 @@
+:root {
+  --dp-color-ground: #f3efe5;
+  --dp-color-ink: #191916;
+  --dp-color-secondary: #494843;
+  --dp-color-rule: #9b978e;
+  --dp-color-accent: #a3231d;
+  --dp-typography-display: "Newsprint Display", Georgia, serif;
+  --dp-typography-reading: "Newsprint Reading", Georgia, serif;
+  --dp-typography-body: 20px;
+  --dp-typography-reading-compact: 19px;
+  --dp-typography-label: 12px;
+  --dp-typography-control: 15px;
+  --dp-typography-label-weight: 650;
+  --dp-typography-display-weight: 900;
+  --dp-typography-body-leading: 1.3;
+  --dp-typography-control-leading: 1.2;
+  --dp-typography-label-tracking: 0.09em;
+  --dp-spacing-column: 24px;
+  --dp-spacing-story: 22px;
+  --dp-radius-control: 0;
+  --dp-border-hairline: 1px;
+  --dp-border-section: 4px;
+  --dp-border-focus: 2px;
+  --dp-motion-transition: none;
+}
+
