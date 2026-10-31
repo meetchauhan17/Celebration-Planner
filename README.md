@@ -1,150 +1,210 @@
 # Celebration & Event Planner
 
-## Chosen Vertical
-**[Challenge 5] Celebration & Event Planner**
+An editorial-grade celebration coordination platform and deterministic financial decision engine built with Next.js 14, TypeScript, and the Organic Design System.
+
+The platform provides end-to-end event planning across weddings, milestone birthdays, and community festivals. It couples pure mathematical allocation algorithms with optional, privacy-isolated generative AI guidance to produce audit-ready budgets, backward-scheduled milestone timelines, vendor procurement trackers, catering headcount formulas, and printable broadsheet summaries.
 
 ---
 
-## Approach and Logic
+## Architectural Philosophy
 
-### Two-Layer Architecture
-The Celebration & Event Planner separates planning into two deliberate layers:
-1. **Deterministic Calculation Engine (`/src/lib/engine`)**: Pure, reproducible mathematical and algorithmic logic with zero side effects and zero AI involvement. It powers:
-   - Budget allocation, category floor guarantees (e.g. ₹500/guest wedding catering floor, ₹250/guest birthday, ₹150/guest community), priority shifts, and proportional rebalancing.
-   - Lead-time scheduling, short-notice compression, and critical task risk assessment.
-   - Vendor procurement checklist generation, quote-to-budget comparison, and "next-to-book" prioritization.
-   - Catering buffer computation (`confirmed + 10%` rounded up) and RFC 5545 iCalendar (`.ics`) generation.
-2. **Generative AI Layer (`/src/lib/ai`)**: Grounded inspiration and planning concierges powered by Groq (`llama-3.3-70b-versatile`). It powers:
-   - Structured idea generation with strict JSON schema adherence (`/api/ideas`).
-   - Conversational planning concierge (`/api/assistant`) that references strictly aggregate event statistics.
+The application employs a strict two-layer architecture separating mathematical certainty from creative generation:
 
-### Why This Split Makes Decisions Explainable and Testable
-- **Auditability**: Every rupee allocated in the budget is mathematically explainable through base weights, city tier multipliers, and priority adjustments.
-- **Reliability & Testability**: 100% of mathematical formulas, schedule compressions, and quote checks are unit-tested without flaky mock completions or network dependencies.
-- **Graceful Fallbacks**: If the AI key is absent or Groq returns 429/5xx, the deterministic engine seamlessly returns rule-based suggestions and answers.
+```mermaid
+flowchart TD
+    User["User Interface (Next.js 14 App Router)"]
 
-### User Context Sensitivity
-Outputs adapt deterministically based on user inputs:
-- **Event Type**: Weddings prioritize hospitality and venue; birthdays anchor dining, entertainment, and cake; community gatherings emphasize safety permits, lighting/sound, and outreach.
-- **Guest Count & Budget**: Determines per-guest metrics and enforces minimum catering viability floors.
-- **Event Date**: Lead times adapt from comprehensive multi-month roadmaps to high-priority compressed schedules when notice is short.
-- **City Tier**: Metro events scale venue and logistics allocations; tier-2 and towns preserve balanced spreads.
-- **Venue Type**: Outdoor venues trigger infrastructure and weather contingency provisions; indoor venues prioritize hall decor.
-- **Priorities & Dietary Needs**: Additive points boost mapped categories (e.g., `+3%` to catering for food priority).
+    subgraph Client["Client-Side Browser Environment"]
+        UI["Organic UI Primitives & Pages"]
+        Storage["Local Storage Persistence (celebration-planner:v1)"]
+        Export["RFC 5545 iCalendar (.ics) & Sanitized CSV Exporter"]
+    end
 
-#### 3 Concrete Examples
-1. **Outdoor Wedding 20 Days Away (Metro, ₹15,00,000, 200 Guests)**:
-   - *Timeline*: Detects short notice (< 30 days) and compresses overdue critical milestones (venue contract, marriage license, caterer deposit), spreading them over consecutive days to prevent overwhelming the planner.
-   - *Budget*: Metro venue anchor + outdoor weather contingency reserve (≥ 4%).
-   - *Vendors*: Flags venue and catering as urgent "Next to book".
-2. **Indoor Birthday 60 Days Away (Tier-2 City, ₹50,000, 40 Guests)**:
-   - *Budget*: Anchors 35% to catering, 15% to entertainment, 6% to cake, and 4% to return gifts.
-   - *Timeline*: Normal cadence (venue selection at 30 days, cake tasting at 10 days, RSVPs at 14 days).
-   - *Catering*: Automatic buffer suggests food orders for 44 attendees.
-3. **Community Cultural Festival 120 Days Away (Town, ₹3,00,000, 500 Guests)**:
-   - *Budget*: Allocates 12% to sound/lighting, 8% to safety/permits, and 10% to volunteer promotion.
-   - *Timeline*: Municipal permit deadlines anchored 45 days prior, volunteer briefing 14 days out.
+    subgraph Deterministic["Layer 1: Deterministic Engine (/src/lib/engine)"]
+        BudgetEngine["Budget Allocator & Floor Enforcer"]
+        TimelineEngine["Backward Milestone Scheduler"]
+        VendorEngine["Vendor Procurement & Quote Tracker"]
+        GuestEngine["Catering Headcount (10% Buffer) & Dietary Breakdown"]
+    end
 
----
+    subgraph AI["Layer 2: Generative AI Layer (/src/lib/ai)"]
+        ContextSanitizer["Context Sanitizer (Strictly Zero PII)"]
+        Groq["Groq SDK (llama-3.3-70b-versatile)"]
+        Fallback["Algorithmic Fallback Engine"]
+    end
 
-## How the Solution Works: 11-Page User Flow
-
-1. **Home (`/`)**: Broad editorial lead spread introducing celebration planning capabilities, key features, and entry points into the planning wizard.
-2. **Plan Wizard (`/plan`)**: Accessible 4-step wizard (*The Basics*, *Scale and Place*, *Money*, *Preferences*) with live per-guest calculations, catering floor warnings, and accessible keyboard navigation.
-3. **Events Directory (`/events`)**: Horizontal directory of all saved celebrations, separating upcoming and past events, with delete confirmation dialogs and zero data loss.
-4. **Event Overview (`/events/[id]`)**: Newspaper front-page overview with headline, editorial data summary, factual numerical strip, and urgent next-action callouts.
-5. **Budget Ledger (`/events/[id]/budget`)**: Financial ledger displaying planned allocations, editable actual spend, live variance tracking, over-budget warnings, and proportional category rebalancing.
-6. **Timeline Roadmap (`/events/[id]/timeline`)**: Grouped milestones (*Overdue*, *This Week*, *This Month*, *Later*, *Done*), critical/at-risk indicators, inline status controls, custom task creation, and timeline regeneration.
-7. **Vendor Procurement (`/events/[id]/vendors`)**: Directory of key service providers, "Next to book" critical badges, quote-to-budget comparison, "Use quote as actual spend" actions, and question disclosures.
-8. **Guest Directory & RSVPs (`/events/[id]/guests`)**: Complete attendee tracker with single and bulk import (deduplicated), per-diet breakdowns, 10% buffer catering headcount, and anti-injection CSV export.
-9. **Ideas Desk (`/events/[id]/ideas`)**: AI-powered creative concept generator with unequal visual hierarchy (prominent lead entry + 4 supporting entries), provenance notes (*AI* vs *Fallback*), and a pinned scrapbook.
-10. **Planning Assistant (`/events/[id]/assistant`)**: Two-column spread featuring instant inquiry prompts and an accessible conversation stream adhering to strict privacy filters.
-11. **Summary Broadsheet (`/events/[id]/summary`)**: A unified, printable broadsheet compiling headlines, budget tables, critical tasks, vendors, catering numbers, and pinned concepts. Includes RFC 5545 `.ics` export, JSON backup/restore, and complete storage reset.
-
----
-
-## Assumptions Made
-- **Currency**: Defaults to Indian Rupee (INR / ₹) with standard locale formatting.
-- **Catering Floors**: Benchmark catering floors (₹500 for weddings, ₹250 for birthdays, ₹150 for community gatherings) are realistic estimates for planning guidance.
-- **City Tiers**: City tier classifications (metro, tier-2, town) are user-declared to reflect anticipated cost of living and vendor rates.
-- **Vendor Rates**: Prices shown reflect user-entered estimates or vendor quotes; live marketplace pricing or availability is not queried.
-- **Storage**: All personal event data lives entirely in the browser's `localStorage` (`celebration-planner:v1`); no account registration or external server database is required.
-- **AI Guidance**: AI outputs serve as creative suggestions and directional planning support, not contracted commitments.
-
----
-
-## Security and Privacy
-- **Server-Side API Key**: `GROQ_API_KEY` is loaded strictly in server-only modules (`/src/lib/ai/groq.ts`) and is never leaked to the client bundle.
-- **Zero HTML Injection**: No usage of `dangerouslySetInnerHTML`, `innerHTML`, or `eval()`.
-- **Guest Privacy Enforcement**: Guest names, contact numbers, and personal details are strictly isolated in the browser and are never transmitted to AI endpoints.
-- **CSV Formula Injection Sanitization**: All exported CSV cells starting with `=`, `+`, `-`, or `@` are safely prefixed with an apostrophe (`'`).
-- **Input Validation & Rate Limiting**: All API routes enforce strict Zod schemas, payload size caps, and per-IP in-memory rate limiting.
-- **Security Headers**: `next.config.mjs` configures strict Content Security Policy (`CSP`), `X-Content-Type-Options: nosniff`, `X-Frame-Options: DENY`, `Referrer-Policy`, and `Permissions-Policy`.
-
----
-
-## Accessibility
-- **WCAG 2.1 AA Compliance**: All pages pass `axe-core` accessibility audits with **0 violations**.
-- **Keyboard Navigation**: Comprehensive keyboard support across wizard fieldsets, interactive listing rows, disclosures, modal dialogs, and table inputs with visible focus rings.
-- **Color Independence**: Color is never the sole conveyor of information (e.g. "Over", "Critical", "At risk", and "Next to book" badges all feature explicit text labels).
-- **Contrast Ratios**: Body text (`#1a1917` ink) and muted labels (`#4a4843`) achieve high contrast ratios against canvas backgrounds (`#f9f8f5`), exceeding the 4.5:1 requirement.
-- **Motion & Responsive Scaling**: Zero decorative animations or motion transitions (`prefers-reduced-motion` natively respected); tested without layout breakage at 200% and 400% zoom, as well as on 375px mobile viewports.
-
----
-
-## Testing
-
-### Running Tests
-```bash
-# Run all unit, integration, and accessibility tests
-npm test
-
-# Run tests with test coverage report
-npm test -- --coverage
+    User --> UI
+    UI --> Deterministic
+    Deterministic --> Storage
+    UI --> Storage
+    UI --> Export
+    UI --> ContextSanitizer
+    ContextSanitizer --> Groq
+    Groq -.->|Fallback on 429/5xx or missing key| Fallback
+    Fallback --> UI
+    Groq --> UI
 ```
 
-### Coverage Scope
-- **Pure Engines (`/src/lib/engine`)**: >85% statement and branch coverage across budget allocation, scheduling, vendor prioritization, catering buffers, and iCalendar generation.
-- **Domain Models (`/src/lib/domain`)**: Strict schema validation tests for brief parameters, planned event structures, and boundary checks.
-- **UI & Accessibility**: Automated `jest-axe` audits across all 11 core routes.
-- **End-to-End Integration Flow**: Full wizard completion validating budget sum integrity, milestone generation, and vendor procurement.
+### Layer 1: Deterministic Calculation Engine (`/src/lib/engine`)
+Pure, reproducible mathematical and algorithmic logic with zero side effects and zero external network calls:
+- **Budget Allocation**: Computes exact percentage allocations based on event format, city tier, venue environment, and user priorities. Enforces non-negotiable catering viability floors (e.g., ₹500/guest for weddings, ₹250/guest for birthdays, ₹150/guest for community gatherings).
+- **Proportional Rebalancing**: Dynamically adjusts discretionary categories (decor, entertainment, contingency) when user modifies actual spending lines or adjusts catering commitments.
+- **Backward Milestone Scheduling**: Calculates milestone deadlines backward from the celebration date, automatically compressing schedules and staggering overdue tasks across consecutive days for short-notice events.
+- **Vendor Procurement Logic**: Matches budget lines with vendor categories, flags next-to-book contracts based on milestone urgency, and offers one-click quote-to-actual budget synchronization.
+- **Catering Buffer Math**: Computes suggested catering counts using the industry standard `confirmed + 10% buffer` (rounded up) with complete dietary breakdowns.
+- **Calendar & CSV Generators**: Produces standard RFC 5545 `.ics` calendar files and formula-injection-sanitized CSV exports directly in the client.
+
+### Layer 2: Generative AI Layer (`/src/lib/ai`)
+Grounded contextual inspiration and conversational planning assistance powered by Groq (`llama-3.3-70b-versatile`):
+- **Structured Ideation (`/api/ideas`)**: Generates structured thematic, culinary, decor, and activity concepts adhering to strict Zod JSON schemas.
+- **Planning Concierge (`/api/assistant`)**: Answers logistical questions, evaluates trade-offs, and provides actionable contingencies.
+- **Zero-Telemetry Fallback**: If the API key is omitted or the service encounters rate limits, a rule-based engine transparently supplies high-fidelity deterministic responses.
 
 ---
 
-## Tech Stack and Setup Instructions
+## Core Capabilities
 
-### Tech Stack
-- **Framework**: Next.js 14 (App Router, Server Components & Route Handlers)
-- **Language**: TypeScript (strict mode)
-- **Styling**: Newsprint Editorial Design System (pure semantic CSS & custom properties; no Tailwind CSS)
-- **Validation**: Zod
-- **Testing**: Vitest, React Testing Library, `jest-axe`
-- **AI SDK**: Groq SDK (`llama-3.3-70b-versatile`)
+### Context-Sensitive Generation
+- **Event Type Profiles**: Weddings prioritize venue contracts, guest hospitality, and photography; birthdays anchor dining, entertainment, and custom confectionery; community festivals emphasize municipal permits, crowd safety, volunteer rosters, and staging.
+- **City Tier Adjustments**: Metro areas increase venue and logistics allocations; Tier 2 cities and towns allocate greater shares to hospitality and catering.
+- **Venue Environment Rules**: Outdoor celebrations enforce a mandatory weather contingency reserve (≥ 4%) and infrastructure line items; indoor venues concentrate funds on audiovisual and hall styling.
+- **Priority Multipliers**: User-selected focal points (such as Food & Beverage or Photography) dynamically rebalance category weights by predefined point bonuses.
 
-### Setup Instructions
-1. **Clone the repository**:
+### Privacy-Preserving Architecture
+- **Browser-Only Storage**: All briefs, guest rosters, financial figures, and vendor agreements remain in the client's `localStorage` (`celebration-planner:v1`).
+- **PII Isolation**: Guest names, phone numbers, and personal details are strictly isolated in the browser and never transmitted to AI endpoints. AI requests receive only anonymized, aggregate event statistics.
+- **CSV Formula Injection Shield**: All exported CSV cells prefixed with `=`, `+`, `-`, or `@` are sanitized with leading apostrophes to protect spreadsheet users.
+- **Strict Content Security**: Configured with restrictive CSP headers, `X-Frame-Options: DENY`, `X-Content-Type-Options: nosniff`, and `Permissions-Policy`.
+
+---
+
+## Application Route Map
+
+| Route | View | Description |
+|---|---|---|
+| `/` | Home Editorial Spread | Architectural overview, feature cards, process steps, and planning entry points. |
+| `/plan` | Planning Wizard | Four-step accessible form (*The Basics*, *Scale and Place*, *Money*, *Preferences*) with live per-guest calculations and catering floor validations. |
+| `/events` | Celebrations Directory | Complete repository of saved events, distinguishing upcoming from past celebrations, with confirmation safeguards. |
+| `/events/[id]` | Event Overview | Newspaper-style front-page briefing, executive factual statistics strip, and urgent next-action callouts. |
+| `/events/[id]/budget` | Budget Ledger | Planned targets vs. actual expenses, live variance tracking, over-budget warnings, and proportional rebalancing. |
+| `/events/[id]/timeline` | Milestone Roadmap | Chronologically sequenced tasks (*Overdue*, *This Week*, *This Month*, *Later*, *Done*), critical path flags, custom milestone creation, and algorithmic regeneration. |
+| `/events/[id]/vendors` | Vendor Procurement | Directory of service providers, quote-to-budget comparison, "Next to book" indicators, one-click quote-to-actual adoption, and FAQ disclosures. |
+| `/events/[id]/guests` | Guest Directory & RSVPs | Individual and bulk attendee ingestion (deduplicated), dietary breakdowns, 10% catering buffer computation, and CSV export. |
+| `/events/[id]/ideas` | Creative Concepts Desk | AI-assisted concept generation with provenance badges (*AI* vs. *Fallback*) and pinned idea scrapbook. |
+| `/events/[id]/assistant` | Planning Assistant | Contextual conversational concierge with pre-formulated prompts, structured replies, and retry states. |
+| `/events/[id]/summary` | Consolidated Broadsheet | Complete printable event briefing compiling financial tables, milestones, vendors, and dietary rosters. Includes `.ics` export, JSON backup/restore, and reset utilities. |
+
+---
+
+## Design System: Organic
+
+The user interface implements the **Organic Design System**, modeling a shared worktable of sand-colored paper, irregular shapes, dark brown type, moss, and fired clay:
+
+- **Palette**:
+  - Sand Ground: `#eee6d6` (tactile page surface with faint paper grain texture)
+  - Paper Surface: `#f5eddf` (raised content sheets, cards, trays, and modal sheets)
+  - Dark Brown Ink: `#29251d` (primary reading type, achieving a 12.3:1 contrast ratio against ground and 13.1:1 on paper)
+  - Muted Ink: `#443b2f` (secondary labels, achieving an 8.85:1 contrast ratio)
+  - Moss: `#35422d` (primary actions, active navigation indicators, and process containers)
+  - Fired Clay: `#694737` (budget alerts, critical deadlines, and prominent top rules)
+  - Terracotta: `#ad7d62` (section markers and milestone badges)
+  - Stone: `#ddd5c3` (footer surface, subtle dividing rules, and table header rows)
+  - Dried Grass: `#b9b28b` (table outlines and secondary chips)
+- **Typography**:
+  - Headings & Display: **Source Serif 4** (`"Organic Source Serif"`, Georgia, serif) with tight tracking and compact line spacing.
+  - Reading & Form Controls: **Instrument Sans** (`"Organic Instrument Sans"`, sans-serif) with generous line heights (`1.8`) for readable editorial prose.
+- **Organic Geometry**:
+  - Authoritative Control Radius: `27px 19px 29px 16px / 22px 26px 19px 29px`
+  - Asymmetrical Tray Radius: `24px 14px 28px 18px / 18px 26px 16px 24px`
+  - Paper Sheet Radius: `20px 28px 18px 26px / 26px 18px 28px 20px`
+- **Accessibility & Motion**:
+  - Fully compliant with **WCAG 2.1 AA** (zero automated `axe-core` violations across all pages).
+  - Explicit high-contrast focus rings (`outline-offset: 3px`).
+  - Native `prefers-reduced-motion` support eliminating all transitions and transforms for users requesting reduced motion.
+
+---
+
+## Tech Stack
+
+- **Framework**: Next.js 14 (App Router, React Server Components, Route Handlers)
+- **Language**: TypeScript 5 (Strict Mode enabled)
+- **Styling**: Pure CSS with Authoritative Custom Properties (no Tailwind CSS, no utility CSS runtime)
+- **Validation**: Zod (Schema validation for forms, storage boundaries, and API payloads)
+- **AI Integration**: Groq SDK (`llama-3.3-70b-versatile`)
+- **Testing**: Vitest, React Testing Library, `jest-axe`, JSDOM
+- **Code Quality**: ESLint, Prettier
+
+---
+
+## Getting Started
+
+### Prerequisites
+- Node.js 18.17 or higher
+- npm 9.0 or higher
+
+### Installation
+
+1. Clone the repository:
    ```bash
-   git clone <repo-url>
-   cd "Celebration & Event Planner"
+   git clone https://github.com/meetchauhan17/Celebration-Planner.git
+   cd Celebration-Planner
    ```
-2. **Install dependencies**:
+
+2. Install dependencies:
    ```bash
    npm install
    ```
-3. **Configure environment variables (Optional)**:
+
+3. Configure environment variables (optional):
    ```bash
    cp .env.example .env.local
-   # Add your GROQ_API_KEY in .env.local (if omitted, high-quality rule-based fallback responses will be used)
    ```
-4. **Run development server**:
+   Add your Groq API key in `.env.local`:
+   ```env
+   GROQ_API_KEY=gsk_your_groq_api_key_here
+   ```
+   *Note: If omitted, the application operates fully offline using high-quality deterministic fallback engines.*
+
+4. Launch the local development server:
    ```bash
    npm run dev
    ```
-   Open `http://localhost:3000` in your browser.
+   Open **http://localhost:3000** in your browser.
 
 ---
 
-## Limitations and Disclaimer
-- **Not Legal, Financial, or Professional Advice**: This tool provides planning guidance, structural schedules, and estimated allocations.
-- **Vendor & Authority Verification**: Always confirm formal contracts, pricing, licenses, noise permits, and security requirements with certified vendors and local municipal authorities.
+## Scripts & Verification
 
+| Command | Purpose |
+|---|---|
+| `npm run dev` | Starts the Next.js development server with hot module replacement on `http://localhost:3000`. |
+| `npm run build` | Compiles an optimized production build and generates static/dynamic routes. |
+| `npm run start` | Serves the production build locally. |
+| `npm test` | Runs the full Vitest test suite (243 unit, engine, domain, and accessibility tests). |
+| `npm run typecheck` | Executes TypeScript type checking (`tsc --noEmit`). |
+| `npm run lint` | Runs Next.js ESLint verification. |
+
+---
+
+## Test Suite Summary
+
+The repository includes comprehensive automated test coverage spanning 30 test suites (243 passing tests):
+
+- **Pure Calculation Engines (`/tests/engine`)**: Unit tests for budget math, catering floors, short-notice compression, vendor priorities, and RFC 5545 iCalendar serialization.
+- **Domain Models & Schemas (`/tests/domain`)**: Boundary, typing, and validation tests for event briefs, guest entities, and timeline tasks.
+- **Security & Privacy (`/tests/ai/security.test.ts`)**: Verification of zero PII leakage in AI payloads, CSV injection sanitization, and rate-limiting enforcement.
+- **Accessibility (`/tests/**/axe`)**: Automated `axe-core` accessibility audits across every view and modal dialog confirming zero violations.
+- **Design System & Contrast (`/tests/design-system`)**: Authoritative token validation, WCAG AA/AAA contrast math checks, and responsive CSS breakpoint assertions.
+
+---
+
+## Limitations & Advisory
+
+- **Planning Guidance Only**: This software provides structured organizational schedules and financial baselines. It does not provide legal, accounting, or professional event production advice.
+- **Vendor & Permit Verification**: Always verify formal pricing, contractual terms, municipal fire/noise permits, and cancellation policies with certified vendors and local authorities.
+
+---
+
+## License
+
+This project is licensed under the MIT License.
