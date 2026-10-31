@@ -678,7 +678,7 @@ npm test
    ```bash
    npm run dev
    ```
-   Access the application at `http://localhost:3000`.
+   Access the application at `http://localhost:3051`.
 
 ### Production Build and Verification
 
