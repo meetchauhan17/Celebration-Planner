@@ -20,10 +20,12 @@ export const CateringSummary: React.FC<CateringSummaryProps> = ({ guests }) => {
     <section
       aria-labelledby="catering-counts-heading"
       style={{
-        border: "var(--dp-border-hairline) solid var(--dp-color-rule)",
+        border: "1px solid var(--dp-color-surface-muted)",
+        borderTop: "4px solid var(--dp-color-primary)",
+        borderRadius: "20px 24px 18px 22px / 22px 18px 24px 20px",
         padding: "var(--dp-space-md)",
         marginBottom: "var(--dp-space-xl)",
-        backgroundColor: "var(--dp-color-canvas)",
+        backgroundColor: "var(--dp-color-surface, #f5eddf)",
       }}
     >
       <SectionLabel>Catering Planning</SectionLabel>

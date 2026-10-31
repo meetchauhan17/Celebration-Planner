@@ -35,9 +35,11 @@ export const BudgetResetConfirm: React.FC<BudgetResetConfirmProps> = ({ onReset 
       className="np-reset-confirm-box"
       style={{
         marginTop: "16px",
-        padding: "16px",
-        border: "var(--dp-border-hairline) solid var(--dp-color-rule)",
-        backgroundColor: "var(--dp-color-ground)",
+        padding: "18px",
+        border: "1px solid var(--dp-color-field)",
+        borderLeft: "5px solid var(--dp-color-field)",
+        borderRadius: "var(--dp-radius-control)",
+        backgroundColor: "var(--dp-color-surface, #f5eddf)",
       }}
     >
       <div

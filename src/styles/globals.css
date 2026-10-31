@@ -1,48 +1,71 @@
 @import "./tokens.css";
 @import "./newsprint.css";
 
-/* Local and Google Fonts fallback mapping to expose CSS font names */
+/* Local and Google Fonts mapping to expose Authoritative CSS font names */
 @font-face {
-  font-family: "Newsprint Display";
+  font-family: "Organic Source Serif";
   src: local("Source Serif 4"), local("Source Serif Pro"), local("SourceSerif4-Regular");
   font-weight: 200 900;
   font-style: normal;
 }
 
 @font-face {
-  font-family: "Newsprint Display";
+  font-family: "Organic Source Serif";
   src: local("Source Serif 4 Italic"), local("Source Serif Pro Italic"), local("SourceSerif4-Italic");
   font-weight: 200 900;
   font-style: italic;
 }
 
 @font-face {
-  font-family: "Newsprint Reading";
-  src: local("EB Garamond"), local("EBGaramond-Regular");
-  font-weight: 400 800;
+  font-family: "Organic Instrument Sans";
+  src: local("Instrument Sans"), local("InstrumentSans-Regular");
+  font-weight: 400 700;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "Organic Instrument Sans";
+  src: local("Instrument Sans Italic"), local("InstrumentSans-Italic");
+  font-weight: 400 700;
+  font-style: italic;
+}
+
+/* Fallback aliases for Newsprint */
+@font-face {
+  font-family: "Newsprint Display";
+  src: local("Source Serif 4"), local("Source Serif Pro");
+  font-weight: 200 900;
   font-style: normal;
 }
 
 @font-face {
   font-family: "Newsprint Reading";
-  src: local("EB Garamond Italic"), local("EBGaramond-Italic");
+  src: local("Instrument Sans"), local("InstrumentSans-Regular");
   font-weight: 400 800;
-  font-style: italic;
+  font-style: normal;
 }
 
-/* Global Reset: Flat and square everywhere, no shadows, no border-radius, no gradients, no grain, no animation */
+/* Global Reset: Organic surfaces, no glossy gradients, no glass, no deep floating shadows */
 *,
 *::before,
 *::after {
   box-sizing: border-box;
   margin: 0;
   padding: 0;
-  border-radius: var(--dp-radius-control) !important;
-  box-shadow: none !important;
-  text-shadow: none !important;
-  filter: none !important;
+  box-shadow: none;
+  text-shadow: none;
+  filter: none;
   transition: var(--dp-motion-transition);
-  animation: none;
+}
+
+/* Control elements and interactive components use the organic irregular radius */
+button,
+input,
+select,
+textarea,
+.np-button,
+a.np-button {
+  border-radius: var(--dp-radius-control);
 }
 
 html {
@@ -50,13 +73,15 @@ html {
   color: var(--dp-color-ink);
   font-family: var(--dp-typography-reading);
   font-size: var(--dp-typography-body);
-  line-height: var(--dp-typography-body-leading);
+  line-height: var(--dp-typography-reading-leading);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
 body {
   background-color: var(--dp-color-ground);
+  /* Faint continuous paper grain beneath the content */
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.032'/%3E%3C/svg%3E");
   color: var(--dp-color-ink);
   min-height: 100vh;
   margin: 0;
@@ -69,7 +94,7 @@ body {
 p {
   font-family: var(--dp-typography-reading);
   font-size: var(--dp-typography-body);
-  line-height: var(--dp-typography-body-leading);
+  line-height: var(--dp-typography-reading-leading);
   color: var(--dp-color-ink);
   margin-bottom: var(--dp-spacing-story);
 }
@@ -79,7 +104,8 @@ p:last-child {
 }
 
 .text-compact {
-  font-size: var(--dp-typography-reading-compact);
+  font-size: var(--dp-typography-reading-small);
+  line-height: 1.6;
 }
 
 h1,
@@ -89,43 +115,67 @@ h4,
 h5,
 h6 {
   font-family: var(--dp-typography-display);
-  font-weight: var(--dp-typography-display-weight);
+  font-weight: 600;
   color: var(--dp-color-ink);
-  line-height: 1.1;
+  line-height: 1.15;
   letter-spacing: -0.02em;
 }
 
+h1 {
+  font-size: clamp(2.5rem, 5vw, 4.2rem);
+  font-weight: 600;
+}
+
+h2 {
+  font-size: clamp(1.8rem, 3.5vw, 2.6rem);
+}
+
+h3 {
+  font-size: 1.35rem;
+}
+
 label {
-  font-family: var(--dp-typography-display);
-  font-size: var(--dp-typography-label);
-  font-weight: var(--dp-typography-label-weight);
-  letter-spacing: var(--dp-typography-label-tracking);
-  line-height: var(--dp-typography-control-leading);
+  font-family: var(--dp-typography-reading);
+  font-size: var(--dp-typography-metadata);
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  line-height: 1.4;
   text-transform: uppercase;
-  color: var(--dp-color-ink);
+  color: var(--dp-color-ink-muted);
 }
 
 button,
 input,
 select,
 textarea {
-  font-family: var(--dp-typography-display);
+  font-family: var(--dp-typography-reading);
   font-size: var(--dp-typography-control);
-  line-height: var(--dp-typography-control-leading);
+  line-height: 1.4;
   color: var(--dp-color-ink);
+}
+
+button:active,
+.np-button:active,
+a.np-button:active {
+  transform: scale(0.98);
 }
 
 a {
   color: var(--dp-color-ink);
   text-decoration: underline;
   text-underline-offset: 3px;
+  transition: color var(--dp-motion-interaction);
 }
 
-/* Focus: Every interactive element gets a solid outline of --dp-border-focus in ink, with an offset, visible on ground. Never remove outlines. */
+a:hover {
+  color: var(--dp-color-primary);
+}
+
+/* Visible focus outside the control edge */
 :focus,
 :focus-visible {
   outline: var(--dp-border-focus) solid var(--dp-color-ink) !important;
-  outline-offset: 2px !important;
+  outline-offset: 3px !important;
 }
 
 /* Prefers Reduced Motion */
@@ -136,6 +186,7 @@ a {
     animation-duration: 0.01ms !important;
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
+    transform: none !important;
     scroll-behavior: auto !important;
   }
 }
@@ -145,5 +196,4 @@ a {
   max-width: 1240px;
   margin: 0 auto;
   padding: 0 var(--dp-spacing-column);
-  background-color: var(--dp-color-ground);
 }

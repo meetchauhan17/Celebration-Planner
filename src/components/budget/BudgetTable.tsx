@@ -96,17 +96,6 @@ export const BudgetTable: React.FC<BudgetTableProps> = ({
                       <div
                         className="np-over-label"
                         aria-label={`${categoryName} is Over budget`}
-                        style={{
-                          color: "var(--dp-color-accent)",
-                          fontSize: "var(--dp-typography-label)",
-                          fontWeight: "var(--dp-typography-label-weight)",
-                          letterSpacing: "var(--dp-typography-label-tracking)",
-                          textTransform: "uppercase",
-                          display: "inline-flex",
-                          alignItems: "center",
-                          gap: "4px",
-                          marginTop: "2px",
-                        }}
                       >
                         <span className="np-over-marker" aria-hidden="true" />
                         <span>Over</span>

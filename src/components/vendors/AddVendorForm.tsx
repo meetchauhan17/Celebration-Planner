@@ -70,9 +70,11 @@ export const AddVendorForm: React.FC<AddVendorFormProps> = ({ onAddVendor }) => 
       className="np-add-vendor-box"
       style={{
         margin: "28px 0",
-        padding: "20px",
-        border: "var(--dp-border-hairline) solid var(--dp-color-rule)",
-        backgroundColor: "var(--dp-color-ground)",
+        padding: "24px",
+        border: "1px solid var(--dp-color-surface-muted)",
+        borderTop: "4px solid var(--dp-color-field)",
+        borderRadius: "20px 24px 18px 22px / 22px 18px 24px 20px",
+        backgroundColor: "var(--dp-color-surface, #f5eddf)",
       }}
     >
       <SectionLabel>Procurement</SectionLabel>
@@ -116,7 +118,7 @@ export const AddVendorForm: React.FC<AddVendorFormProps> = ({ onAddVendor }) => 
               required
               value={category}
               onChange={(e) => setCategory(e.target.value)}
-              className="np-field-input"
+              className="np-input"
               style={{ width: "100%", padding: "8px" }}
               placeholder="e.g. Catering, Florist, Transport"
             />
@@ -136,7 +138,7 @@ export const AddVendorForm: React.FC<AddVendorFormProps> = ({ onAddVendor }) => 
               required
               value={label}
               onChange={(e) => setLabel(e.target.value)}
-              className="np-field-input"
+              className="np-input"
               style={{ width: "100%", padding: "8px" }}
               placeholder="e.g. Royal Decorators"
             />
@@ -181,7 +183,7 @@ export const AddVendorForm: React.FC<AddVendorFormProps> = ({ onAddVendor }) => 
               step={500}
               value={quoteAmount}
               onChange={(e) => setQuoteAmount(e.target.value)}
-              className="np-field-input"
+              className="np-input"
               style={{ width: "100%", padding: "8px" }}
               placeholder="e.g. 50000"
             />
@@ -201,7 +203,7 @@ export const AddVendorForm: React.FC<AddVendorFormProps> = ({ onAddVendor }) => 
             type="text"
             value={contact}
             onChange={(e) => setContact(e.target.value)}
-            className="np-field-input"
+            className="np-input"
             style={{ width: "100%", padding: "8px" }}
             placeholder="e.g. +91 98765 43210 or manager@vendor.com"
           />

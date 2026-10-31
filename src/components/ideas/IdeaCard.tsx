@@ -34,13 +34,17 @@ export const IdeaCard: React.FC<IdeaCardProps> = ({
     <article
       className={`np-idea-entry ${isLead ? "np-idea-lead" : "np-idea-supporting"}`}
       style={{
-        border: "var(--dp-border-hairline) solid var(--dp-color-rule)",
+        border: "1px solid var(--dp-color-surface-muted, #ddd5c3)",
+        borderTop: isLead ? "4px solid var(--dp-color-field, #694737)" : "4px solid var(--dp-color-primary, #35422d)",
+        borderRadius: "20px 24px 18px 22px / 22px 18px 24px 20px",
         padding: isLead ? "var(--dp-space-lg)" : "var(--dp-space-md)",
-        backgroundColor: "var(--dp-color-canvas)",
+        backgroundColor: "var(--dp-color-surface, #f5eddf)",
         display: "flex",
         flexDirection: "column",
         justifyContent: "space-between",
         height: "100%",
+        transform: isLead ? "rotate(-0.4deg)" : "rotate(0.4deg)",
+        transition: "transform var(--dp-motion-interaction)",
       }}
     >
       <div>
@@ -50,8 +54,8 @@ export const IdeaCard: React.FC<IdeaCardProps> = ({
             justifyContent: "space-between",
             alignItems: "baseline",
             marginBottom: "8px",
-            borderBottom: "var(--dp-border-hairline) solid var(--dp-color-rule)",
-            paddingBottom: "4px",
+            borderBottom: "1px solid var(--dp-color-surface-muted, #ddd5c3)",
+            paddingBottom: "6px",
           }}
         >
           <span
@@ -60,7 +64,11 @@ export const IdeaCard: React.FC<IdeaCardProps> = ({
               textTransform: "uppercase",
               letterSpacing: "0.08em",
               fontSize: "0.75rem",
-              fontWeight: "bold",
+              fontWeight: "600",
+              backgroundColor: "var(--dp-color-surface-muted, #ddd5c3)",
+              color: "var(--dp-color-ink)",
+              padding: "2px 8px",
+              borderRadius: "var(--dp-radius-control)",
             }}
           >
             {idea.tag}
@@ -69,6 +77,7 @@ export const IdeaCard: React.FC<IdeaCardProps> = ({
             className="text-label"
             style={{
               fontSize: "0.8rem",
+              fontWeight: "700",
               color: "var(--dp-color-secondary)",
             }}
           >

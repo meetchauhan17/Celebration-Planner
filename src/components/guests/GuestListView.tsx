@@ -268,16 +268,15 @@ export const GuestListView: React.FC<GuestListViewProps> = ({ event }) => {
               : "No guests match your search or filter."}
           </p>
         ) : (
-          <div role="list" aria-label="Guest list">
+          <div aria-label="Guest list">
             {paginatedGuests.map((guest) => (
-              <div role="listitem" key={guest.id}>
-                <GuestListingRow
-                  guest={guest}
-                  dietaryOptions={brief.dietaryNeeds || []}
-                  onUpdateGuest={handleUpdateGuest}
-                  onDeleteGuest={handleDeleteGuest}
-                />
-              </div>
+              <GuestListingRow
+                key={guest.id}
+                guest={guest}
+                dietaryOptions={brief.dietaryNeeds || []}
+                onUpdateGuest={handleUpdateGuest}
+                onDeleteGuest={handleDeleteGuest}
+              />
             ))}
           </div>
         )}

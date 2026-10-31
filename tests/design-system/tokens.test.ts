@@ -2,36 +2,34 @@ import { describe, it, expect } from "vitest";
 import fs from "fs";
 import path from "path";
 
-describe("Newsprint Design System - Tokens & Accessibility", () => {
+describe("Organic Design System - Tokens & Accessibility", () => {
   const tokensFilePath = path.resolve(__dirname, "../../src/styles/tokens.css");
   const tokensCss = fs.readFileSync(tokensFilePath, "utf8");
 
-  it("defines EXACTLY all 23 specified variables in /src/styles/tokens.css on :root", () => {
-    // Expected exact list of variable definitions
+  it("defines EXACTLY all 21 specified variables in /src/styles/tokens.css on :root", () => {
+    // Expected exact list of authoritative variable definitions for Organic Design System
     const expectedTokens: Record<string, string> = {
-      "--dp-color-ground": "#f3efe5",
-      "--dp-color-ink": "#191916",
-      "--dp-color-secondary": "#494843",
-      "--dp-color-rule": "#9b978e",
-      "--dp-color-accent": "#a3231d",
-      "--dp-typography-display": '"Newsprint Display", Georgia, serif',
-      "--dp-typography-reading": '"Newsprint Reading", Georgia, serif',
-      "--dp-typography-body": "20px",
-      "--dp-typography-reading-compact": "19px",
-      "--dp-typography-label": "12px",
-      "--dp-typography-control": "15px",
-      "--dp-typography-label-weight": "650",
-      "--dp-typography-display-weight": "900",
-      "--dp-typography-body-leading": "1.3",
-      "--dp-typography-control-leading": "1.2",
-      "--dp-typography-label-tracking": "0.09em",
-      "--dp-spacing-column": "24px",
-      "--dp-spacing-story": "22px",
-      "--dp-radius-control": "0",
+      "--dp-color-ground": "#eee6d6",
+      "--dp-color-surface": "#f5eddf",
+      "--dp-color-ink": "#29251d",
+      "--dp-color-primary": "#35422d",
+      "--dp-color-field": "#694737",
+      "--dp-color-art-accent": "#ad7d62",
+      "--dp-color-surface-muted": "#ddd5c3",
+      "--dp-color-highlight": "#b9b28b",
+      "--dp-color-ink-muted": "#443b2f",
+      "--dp-typography-display": '"Organic Source Serif", Georgia, serif',
+      "--dp-typography-reading": '"Organic Instrument Sans", sans-serif',
+      "--dp-typography-body": "16px",
+      "--dp-typography-reading-small": "15px",
+      "--dp-typography-control": "14px",
+      "--dp-typography-caption": "13px",
+      "--dp-typography-metadata": "12px",
+      "--dp-typography-reading-leading": "1.8",
+      "--dp-spacing-content-gap": "24px",
+      "--dp-radius-control": "27px 19px 29px 16px / 22px 26px 19px 29px",
       "--dp-border-hairline": "1px",
-      "--dp-border-section": "4px",
-      "--dp-border-focus": "2px",
-      "--dp-motion-transition": "none",
+      "--dp-motion-interaction": "240ms ease",
     };
 
     // Parse variables declared on :root
@@ -93,22 +91,36 @@ describe("Newsprint Design System - Tokens & Accessibility", () => {
       return (Math.max(l1, l2) + 0.05) / (Math.min(l1, l2) + 0.05);
     }
 
-    const ground = "#f3efe5";
-    const ink = "#191916";
-    const secondary = "#494843";
-    const accent = "#a3231d";
+    const ground = "#eee6d6";
+    const surface = "#f5eddf";
+    const ink = "#29251d";
+    const inkMuted = "#443b2f";
+    const primary = "#35422d";
+    const field = "#694737";
 
     // 1. Ink on ground (dominant text)
     const inkRatio = getContrast(ink, ground);
-    expect(inkRatio).toBeGreaterThanOrEqual(7); // AAA standard (>7:1, actual ~15.34)
+    expect(inkRatio).toBeGreaterThanOrEqual(7); // AAA standard (>7:1, actual ~12.29)
 
-    // 2. Secondary on ground (crucial requirement from user prompt)
-    const secondaryRatio = getContrast(secondary, ground);
-    expect(secondaryRatio).toBeGreaterThanOrEqual(4.5); // Exceeds WCAG AA (actual ~7.98:1, even meets AAA!)
+    // 2. Ink on surface (paper cards)
+    const surfaceInkRatio = getContrast(ink, surface);
+    expect(surfaceInkRatio).toBeGreaterThanOrEqual(7); // AAA standard (>7:1, actual ~13.12)
 
-    // 3. Accent on ground
-    const accentRatio = getContrast(accent, ground);
-    expect(accentRatio).toBeGreaterThanOrEqual(4.5); // Exceeds WCAG AA (actual ~6.50:1)
+    // 3. Ink-muted on ground
+    const inkMutedRatio = getContrast(inkMuted, ground);
+    expect(inkMutedRatio).toBeGreaterThanOrEqual(4.5); // Exceeds WCAG AA (actual ~8.85:1)
+
+    // 4. Primary on ground (moss badges/headings)
+    const primaryRatio = getContrast(primary, ground);
+    expect(primaryRatio).toBeGreaterThanOrEqual(4.5); // Exceeds WCAG AA (actual ~8.60:1)
+
+    // 5. Light text on darker fields: surface paper on moss
+    const mossTextRatio = getContrast(surface, primary);
+    expect(mossTextRatio).toBeGreaterThanOrEqual(7); // AAA standard (actual ~9.18:1)
+
+    // 6. Light text on darker fields: surface paper on fired clay
+    const clayTextRatio = getContrast(surface, field);
+    expect(clayTextRatio).toBeGreaterThanOrEqual(4.5); // Exceeds WCAG AA (actual ~7.06:1)
   });
 
   it("verifies global CSS contains prefers-reduced-motion block and focus outline specs", () => {
@@ -123,9 +135,8 @@ describe("Newsprint Design System - Tokens & Accessibility", () => {
     expect(globalsCss).toContain("var(--dp-color-ink)");
     expect(globalsCss).toContain("outline-offset");
 
-    // Must enforce flat and square (no border-radius, no box-shadow, no animation)
+    // Must enforce organic radius token and calm flat styling
     expect(globalsCss).toContain("border-radius: var(--dp-radius-control)");
     expect(globalsCss).toContain("box-shadow: none");
   });
 });
-

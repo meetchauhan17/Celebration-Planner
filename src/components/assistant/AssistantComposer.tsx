@@ -76,9 +76,11 @@ export const AssistantComposer: React.FC<AssistantComposerProps> = ({
         placeholder="Type your question or request here..."
         style={{
           width: "100%",
-          padding: "10px",
-          border: "var(--dp-border-hairline) solid var(--dp-color-rule)",
-          backgroundColor: "var(--dp-color-ground)",
+          padding: "12px 14px",
+          border: "1px solid var(--dp-color-surface-muted)",
+          borderRadius: "var(--dp-radius-control)",
+          backgroundColor: "var(--dp-color-surface, #f5eddf)",
+          color: "var(--dp-color-ink)",
           fontSize: "1rem",
           fontFamily: "var(--dp-typography-reading)",
           lineHeight: "1.4",

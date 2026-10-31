@@ -11,7 +11,7 @@ export const metadata: Metadata = {
 export default function PlanPage() {
   return (
     <div className="page-container" style={{ paddingBottom: "48px" }}>
-      <div style={{ maxWidth: "740px", margin: "0 auto", paddingTop: "16px" }}>
+      <div style={{ maxWidth: "780px", margin: "0 auto", paddingTop: "16px" }}>
         <SectionLabel>Setup Wizard</SectionLabel>
         <h1 style={{ fontSize: "2.4rem", margin: "8px 0 12px 0" }}>
           Plan a Celebration

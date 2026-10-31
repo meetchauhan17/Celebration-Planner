@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { newsprintDisplay, newsprintReading } from "./fonts";
+import { organicDisplay, organicReading } from "./fonts";
 import "@/styles/tokens.css";
 import "@/styles/globals.css";
 import { SkipLink, ShellHeader, ShellFooter, AnnounceProvider } from "@/components/shell";
@@ -17,7 +17,7 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${newsprintDisplay.variable} ${newsprintReading.variable}`}
+      className={`${organicDisplay.variable} ${organicReading.variable}`}
     >
       <body>
         <AnnounceProvider>

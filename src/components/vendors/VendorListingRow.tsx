@@ -174,7 +174,7 @@ export const VendorListingRow: React.FC<VendorListingRowProps> = ({
           onChange={(e) =>
             onUpdateVendor({ ...vendor, contact: e.target.value || undefined })
           }
-          className="np-field-input"
+          className="np-input"
           style={{ width: "100%", padding: "4px 6px", fontSize: "14px" }}
         />
         {/* Render telephone link if valid phone pattern detected, otherwise plain text */}

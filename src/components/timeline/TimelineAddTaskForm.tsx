@@ -65,9 +65,11 @@ export const TimelineAddTaskForm: React.FC<TimelineAddTaskFormProps> = ({ onAddT
       className="np-add-task-container"
       style={{
         margin: "24px 0",
-        padding: "20px",
-        border: "var(--dp-border-hairline) solid var(--dp-color-rule)",
-        backgroundColor: "var(--dp-color-ground)",
+        padding: "24px",
+        border: "1px solid var(--dp-color-surface-muted)",
+        borderTop: "4px solid var(--dp-color-primary)",
+        borderRadius: "20px 24px 18px 22px / 22px 18px 24px 20px",
+        backgroundColor: "var(--dp-color-surface, #f5eddf)",
       }}
     >
       <SectionLabel>Custom Item</SectionLabel>
@@ -110,8 +112,8 @@ export const TimelineAddTaskForm: React.FC<TimelineAddTaskFormProps> = ({ onAddT
             required
             value={title}
             onChange={(e) => setTitle(e.target.value)}
-            className="np-field-input"
-            style={{ width: "100%", padding: "8px" }}
+            className="np-input"
+            style={{ width: "100%" }}
             placeholder="e.g. Schedule family trial lunch"
           />
         </div>
@@ -131,8 +133,8 @@ export const TimelineAddTaskForm: React.FC<TimelineAddTaskFormProps> = ({ onAddT
               required
               value={dueDate}
               onChange={(e) => setDueDate(e.target.value)}
-              className="np-field-input"
-              style={{ width: "100%", padding: "8px" }}
+              className="np-input"
+              style={{ width: "100%" }}
             />
           </div>
 
@@ -150,8 +152,8 @@ export const TimelineAddTaskForm: React.FC<TimelineAddTaskFormProps> = ({ onAddT
               required
               value={category}
               onChange={(e) => setCategory(e.target.value)}
-              className="np-field-input"
-              style={{ width: "100%", padding: "8px" }}
+              className="np-input"
+              style={{ width: "100%" }}
               placeholder="e.g. Hospitality, Attire, Logistics"
             />
           </div>

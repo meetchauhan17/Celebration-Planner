@@ -14,6 +14,8 @@ export const BudgetProgressBar: React.FC<BudgetProgressBarProps> = ({
   const roundedRatio = Math.round(ratio);
   const ratioText = `${roundedRatio}% of planned`;
 
+  const isOver = ratio > 110;
+
   return (
     <div className="np-budget-progress-container">
       <div
@@ -22,12 +24,13 @@ export const BudgetProgressBar: React.FC<BudgetProgressBarProps> = ({
         style={{
           width: "100%",
           maxWidth: "160px",
-          height: "8px",
-          backgroundColor: "var(--dp-color-ground)",
-          border: "var(--dp-border-hairline) solid var(--dp-color-rule)",
+          height: "9px",
+          backgroundColor: "var(--dp-color-surface-muted, #ddd5c3)",
+          border: "1px solid var(--dp-color-highlight, #b9b28b)",
           borderRadius: "var(--dp-radius-control)",
           position: "relative",
           margin: "4px 0",
+          overflow: "hidden",
         }}
       >
         <div
@@ -35,9 +38,9 @@ export const BudgetProgressBar: React.FC<BudgetProgressBarProps> = ({
           style={{
             width: `${clampedPercent}%`,
             height: "100%",
-            backgroundColor: "var(--dp-color-ink)",
-            borderRadius: "0",
-            transition: "none",
+            backgroundColor: isOver ? "var(--dp-color-field, #694737)" : "var(--dp-color-primary, #35422d)",
+            borderRadius: "var(--dp-radius-control)",
+            transition: "width var(--dp-motion-interaction)",
           }}
         />
       </div>
@@ -45,7 +48,8 @@ export const BudgetProgressBar: React.FC<BudgetProgressBarProps> = ({
         className="text-label"
         aria-label={ratioText}
         style={{
-          color: ratio > 110 ? "var(--dp-color-accent)" : "var(--dp-color-secondary)",
+          color: isOver ? "var(--dp-color-accent)" : "var(--dp-color-secondary)",
+          fontWeight: isOver ? "800" : "var(--dp-typography-label-weight)",
           whiteSpace: "nowrap",
         }}
       >

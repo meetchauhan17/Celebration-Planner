@@ -59,9 +59,15 @@ export const StepMoney: React.FC<StepMoneyProps> = ({
       <div
         className="np-field-wrapper"
         style={{
-          padding: "14px 16px",
-          border: "var(--dp-border-hairline) solid var(--dp-color-rule)",
-          backgroundColor: "var(--dp-color-ground)",
+          padding: "16px 18px",
+          border: isBelowFloor
+            ? "1px solid var(--dp-color-field)"
+            : "1px solid var(--dp-color-surface-muted)",
+          borderLeft: isBelowFloor
+            ? "5px solid var(--dp-color-field)"
+            : "5px solid var(--dp-color-primary)",
+          borderRadius: "var(--dp-radius-control)",
+          backgroundColor: "var(--dp-color-surface, #f5eddf)",
         }}
       >
         <span className="np-field-label">Per-Guest Estimate</span>

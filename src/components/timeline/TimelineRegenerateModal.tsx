@@ -38,8 +38,10 @@ export const TimelineRegenerateModal: React.FC<TimelineRegenerateModalProps> = (
       style={{
         marginTop: "32px",
         padding: "20px",
-        border: "var(--dp-border-hairline) solid var(--dp-color-rule)",
-        backgroundColor: "var(--dp-color-ground)",
+        border: "1px solid var(--dp-color-field)",
+        borderLeft: "5px solid var(--dp-color-field)",
+        borderRadius: "var(--dp-radius-control)",
+        backgroundColor: "var(--dp-color-surface, #f5eddf)",
       }}
     >
       <div

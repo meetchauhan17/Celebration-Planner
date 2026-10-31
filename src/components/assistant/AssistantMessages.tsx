@@ -63,10 +63,15 @@ export const AssistantMessages: React.FC<AssistantMessagesProps> = ({
           <li
             key={msg.id}
             style={{
-              border: "var(--dp-border-hairline) solid var(--dp-color-rule)",
+              border: "1px solid var(--dp-color-surface-muted)",
+              borderTop: isUser ? "1px solid var(--dp-color-surface-muted)" : "4px solid var(--dp-color-primary)",
+              borderRadius: isUser
+                ? "16px 20px 14px 18px / 18px 14px 20px 16px"
+                : "20px 16px 18px 22px / 16px 22px 18px 14px",
               padding: "var(--dp-space-md)",
-              backgroundColor: isUser ? "var(--dp-color-ground)" : "var(--dp-color-canvas)",
+              backgroundColor: isUser ? "var(--dp-color-surface-muted, #ddd5c3)" : "var(--dp-color-surface, #f5eddf)",
             }}
+            data-testid={`chat-message-${msg.id}`}
           >
             <div
               style={{
@@ -74,17 +79,17 @@ export const AssistantMessages: React.FC<AssistantMessagesProps> = ({
                 justifyContent: "space-between",
                 alignItems: "baseline",
                 marginBottom: "6px",
-                borderBottom: "var(--dp-border-hairline) solid var(--dp-color-rule)",
+                borderBottom: "1px solid var(--dp-color-surface-muted)",
                 paddingBottom: "4px",
               }}
             >
               <span
                 className="text-label"
                 style={{
-                  fontWeight: "bold",
+                  fontWeight: "700",
                   letterSpacing: "0.08em",
                   fontSize: "0.75rem",
-                  color: isUser ? "var(--dp-color-ink)" : "var(--dp-color-secondary)",
+                  color: isUser ? "var(--dp-color-ink)" : "var(--dp-color-primary)",
                 }}
               >
                 {speaker}

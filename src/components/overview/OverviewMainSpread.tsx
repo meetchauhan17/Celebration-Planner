@@ -34,7 +34,7 @@ export const OverviewMainSpread: React.FC<OverviewMainSpreadProps> = ({ event })
     <section aria-labelledby="overview-sections-heading" style={{ marginBottom: "var(--dp-spacing-story)" }}>
       <Columns spread>
         {/* Narrow column of links to each section */}
-        <nav aria-label="Event sections navigation" style={{ borderRight: "var(--dp-border-hairline) solid var(--dp-color-rule)", paddingRight: "var(--dp-spacing-column)" }}>
+        <nav aria-label="Event sections navigation" style={{ paddingRight: "var(--dp-spacing-column)" }}>
           <SectionLabel>Event Sections</SectionLabel>
           <ul style={{ listStyle: "none", padding: 0, margin: "12px 0 0 0" }}>
             {SECTION_LINKS.map((sec) => (

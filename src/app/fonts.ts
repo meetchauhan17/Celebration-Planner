@@ -1,24 +1,28 @@
-import { Source_Serif_4, EB_Garamond } from "next/font/google";
+import { Source_Serif_4, Instrument_Sans } from "next/font/google";
 
 /**
- * Newsprint Design System Fonts
- * Source Serif 4 covers weights 200-900 (regular 400, 650, and 900).
- * EB Garamond covers regular (400) and italic styles.
+ * Organic Design System Fonts
+ * Source Serif 4 covers medium-weight statements and headings, bound to "Organic Source Serif".
+ * Instrument Sans covers reading and controls, bound to "Organic Instrument Sans".
  */
-export const newsprintDisplay = Source_Serif_4({
+export const organicDisplay = Source_Serif_4({
   subsets: ["latin"],
-  weight: "variable",
+  weight: ["400", "600", "700"],
   style: ["normal", "italic"],
   fallback: ["Georgia", "serif"],
-  variable: "--font-newsprint-display",
+  variable: "--font-organic-display",
   display: "swap",
 });
 
-export const newsprintReading = EB_Garamond({
+export const organicReading = Instrument_Sans({
   subsets: ["latin"],
-  weight: "variable",
+  weight: ["400", "500", "600", "700"],
   style: ["normal", "italic"],
-  fallback: ["Georgia", "serif"],
-  variable: "--font-newsprint-reading",
+  fallback: ["sans-serif"],
+  variable: "--font-organic-reading",
   display: "swap",
 });
+
+// Backward-compatible exports for any legacy references
+export const newsprintDisplay = organicDisplay;
+export const newsprintReading = organicReading;

@@ -127,14 +127,14 @@ export const PlanWizard: React.FC = () => {
 
         <div className="np-wizard-actions">
           {step > 1 ? (
-            <Button type="button" variant="default" onClick={handleBack}>
+            <Button type="button" variant="secondary" onClick={handleBack}>
               Back
             </Button>
           ) : (
             <div />
           )}
 
-          <Button type="submit">
+          <Button type="submit" variant="default">
             {step === 4 ? "Create celebration plan" : "Next"}
           </Button>
         </div>

@@ -27,8 +27,8 @@ export const TimelineTaskRow: React.FC<TimelineTaskRowProps> = ({
         gridTemplateColumns: "1.4fr 3fr 1.6fr auto",
         gap: "16px",
         alignItems: "start",
-        padding: "14px 0",
-        borderBottom: "var(--dp-border-hairline) solid var(--dp-color-rule)",
+        padding: "14px 4px",
+        borderBottom: "1px solid #d4cfc5",
       }}
     >
       {/* Date & Category */}
@@ -72,10 +72,12 @@ export const TimelineTaskRow: React.FC<TimelineTaskRowProps> = ({
             <span
               className="text-label np-critical-badge"
               style={{
-                color: "var(--dp-color-accent)",
+                color: "#ffffff",
+                backgroundColor: "var(--dp-color-accent)",
                 border: "1px solid var(--dp-color-accent)",
-                padding: "1px 6px",
+                padding: "2px 8px",
                 textTransform: "uppercase",
+                fontWeight: "800",
               }}
             >
               Critical
@@ -86,9 +88,11 @@ export const TimelineTaskRow: React.FC<TimelineTaskRowProps> = ({
             <span
               className="text-label np-at-risk-badge"
               style={{
-                color: "var(--dp-color-accent)",
-                backgroundColor: "rgba(163, 35, 29, 0.08)",
-                padding: "1px 6px",
+                color: "#8a1914",
+                backgroundColor: "#fce8e6",
+                border: "1px solid var(--dp-color-accent)",
+                padding: "2px 8px",
+                fontWeight: "700",
               }}
             >
               At risk: {task.reason || "Tight deadline"}

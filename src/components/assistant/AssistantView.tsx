@@ -157,10 +157,11 @@ export const AssistantView: React.FC<AssistantViewProps> = ({ event }) => {
           role="note"
           aria-label="Privacy notice"
           style={{
-            borderLeft: "var(--dp-border-rule) solid var(--dp-color-ink)",
+            border: "1px solid var(--dp-color-surface-muted)",
+            borderLeft: "4px solid var(--dp-color-primary)",
+            borderRadius: "var(--dp-radius-control)",
             padding: "var(--dp-space-sm) var(--dp-space-md)",
-            backgroundColor: "var(--dp-color-ground)",
-            fontStyle: "italic",
+            backgroundColor: "var(--dp-color-surface, #f5eddf)",
             fontSize: "0.9rem",
           }}
         >
@@ -174,9 +175,10 @@ export const AssistantView: React.FC<AssistantViewProps> = ({ event }) => {
           role="alert"
           data-testid="assistant-error-alert"
           style={{
-            border: "var(--dp-border-hairline) solid var(--dp-color-rule)",
-            borderLeft: "var(--dp-border-rule) solid var(--dp-color-accent)",
-            backgroundColor: "var(--dp-color-ground)",
+            border: "1px solid var(--dp-color-field)",
+            borderLeft: "5px solid var(--dp-color-field)",
+            borderRadius: "var(--dp-radius-control)",
+            backgroundColor: "var(--dp-color-surface, #f5eddf)",
             padding: "var(--dp-space-md)",
             marginBottom: "var(--dp-space-lg)",
             display: "flex",
@@ -187,7 +189,7 @@ export const AssistantView: React.FC<AssistantViewProps> = ({ event }) => {
           }}
         >
           <div>
-            <strong style={{ display: "block", color: "var(--dp-color-accent)" }}>
+            <strong style={{ display: "block", color: "var(--dp-color-field)" }}>
               Unable to complete request
             </strong>
             <p style={{ margin: "4px 0 0 0", fontSize: "0.95rem" }}>{errorMsg}</p>
@@ -205,15 +207,7 @@ export const AssistantView: React.FC<AssistantViewProps> = ({ event }) => {
       )}
 
       {/* Newsprint two-column spread: Narrow column (Try asking) + Wide column (Conversation) */}
-      <div
-        className="np-assistant-spread"
-        style={{
-          display: "grid",
-          gridTemplateColumns: "minmax(220px, 1fr) minmax(320px, 2.5fr)",
-          gap: "var(--dp-space-lg)",
-          alignItems: "start",
-        }}
-      >
+      <div className="np-assistant-spread">
         {/* Narrow column */}
         <div>
           <AssistantSuggestions

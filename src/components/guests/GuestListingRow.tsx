@@ -47,19 +47,30 @@ export const GuestListingRow: React.FC<GuestListingRowProps> = ({
     <span
       style={{
         display: "inline-block",
-        padding: "2px 6px",
-        fontSize: "0.8rem",
-        fontWeight: "bold",
+        padding: "3px 8px",
+        fontSize: "0.75rem",
+        fontWeight: "800",
         textTransform: "uppercase",
-        border: "var(--dp-border-hairline) solid var(--dp-color-rule)",
+        letterSpacing: "0.05em",
+        border:
+          guest.rsvp === "yes"
+            ? "1px solid var(--dp-color-primary)"
+            : guest.rsvp === "no"
+            ? "1px solid var(--dp-color-field)"
+            : "1px solid var(--dp-color-surface-muted)",
         backgroundColor:
           guest.rsvp === "yes"
-            ? "var(--dp-color-ink)"
-            : "transparent",
+            ? "var(--dp-color-primary)"
+            : guest.rsvp === "no"
+            ? "#fbf2ee"
+            : "var(--dp-color-surface-muted, #ddd5c3)",
         color:
           guest.rsvp === "yes"
-            ? "var(--dp-color-canvas)"
+            ? "var(--dp-color-surface, #f5eddf)"
+            : guest.rsvp === "no"
+            ? "var(--dp-color-field)"
             : "var(--dp-color-ink)",
+        borderRadius: "var(--dp-radius-control)",
       }}
     >
       {guest.rsvp}
@@ -67,9 +78,8 @@ export const GuestListingRow: React.FC<GuestListingRowProps> = ({
   );
 
   return (
-    <div style={{ marginBottom: "var(--dp-space-sm)" }}>
-      <Listing
-        identity={
+    <Listing
+      identity={
           <div>
             {isEditing ? (
               <div style={{ display: "flex", flexDirection: "column", gap: "6px" }}>
@@ -79,8 +89,10 @@ export const GuestListingRow: React.FC<GuestListingRowProps> = ({
                   onChange={(e) => setEditName(e.target.value)}
                   aria-label="Edit guest name"
                   style={{
-                    padding: "4px 8px",
-                    border: "var(--dp-border-hairline) solid var(--dp-color-rule)",
+                    padding: "6px 10px",
+                    border: "1.5px solid var(--dp-color-ink)",
+                    backgroundColor: "#ffffff",
+                    color: "var(--dp-color-ink)",
                     fontSize: "0.95rem",
                   }}
                 />
@@ -91,8 +103,10 @@ export const GuestListingRow: React.FC<GuestListingRowProps> = ({
                   aria-label="Edit guest group"
                   placeholder="Group"
                   style={{
-                    padding: "4px 8px",
-                    border: "var(--dp-border-hairline) solid var(--dp-color-rule)",
+                    padding: "6px 10px",
+                    border: "1.5px solid var(--dp-color-ink)",
+                    backgroundColor: "#ffffff",
+                    color: "var(--dp-color-ink)",
                     fontSize: "0.85rem",
                   }}
                 />
@@ -193,6 +207,5 @@ export const GuestListingRow: React.FC<GuestListingRowProps> = ({
           </div>
         }
       />
-    </div>
   );
 };

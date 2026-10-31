@@ -107,10 +107,12 @@ export const AddGuestForm: React.FC<AddGuestFormProps> = ({
     <section
       aria-labelledby="add-guest-heading"
       style={{
-        border: "var(--dp-border-hairline) solid var(--dp-color-rule)",
+        border: "1px solid var(--dp-color-surface-muted)",
+        borderTop: "4px solid var(--dp-color-primary)",
+        borderRadius: "20px 24px 18px 22px / 22px 18px 24px 20px",
         padding: "var(--dp-space-md)",
         marginBottom: "var(--dp-space-xl)",
-        backgroundColor: "var(--dp-color-canvas)",
+        backgroundColor: "var(--dp-color-surface, #f5eddf)",
       }}
     >
       <SectionLabel>Add to Directory</SectionLabel>
@@ -158,13 +160,8 @@ export const AddGuestForm: React.FC<AddGuestFormProps> = ({
                 maxLength={80}
                 required
                 aria-describedby={singleErrors.name ? "guest-name-error" : undefined}
-                style={{
-                  width: "100%",
-                  padding: "8px",
-                  border: "var(--dp-border-hairline) solid var(--dp-color-rule)",
-                  backgroundColor: "var(--dp-color-ground)",
-                  fontSize: "1rem",
-                }}
+                className="np-input"
+                style={{ width: "100%", padding: "8px" }}
               />
               {singleErrors.name && (
                 <span id="guest-name-error" role="alert" style={{ color: "var(--dp-color-accent)", fontSize: "0.85rem" }}>
@@ -184,13 +181,8 @@ export const AddGuestForm: React.FC<AddGuestFormProps> = ({
                 value={group}
                 placeholder="e.g. Friends"
                 onChange={(e) => setGroup(e.target.value)}
-                style={{
-                  width: "100%",
-                  padding: "8px",
-                  border: "var(--dp-border-hairline) solid var(--dp-color-rule)",
-                  backgroundColor: "var(--dp-color-ground)",
-                  fontSize: "1rem",
-                }}
+                className="np-input"
+                style={{ width: "100%", padding: "8px" }}
               />
               <datalist id="guest-group-suggestions">
                 <option value="Family" />
@@ -239,13 +231,8 @@ export const AddGuestForm: React.FC<AddGuestFormProps> = ({
                 max={5}
                 value={plusOnes}
                 onChange={(e) => setPlusOnes(Math.max(0, Math.min(5, parseInt(e.target.value, 10) || 0)))}
-                style={{
-                  width: "100%",
-                  padding: "8px",
-                  border: "var(--dp-border-hairline) solid var(--dp-color-rule)",
-                  backgroundColor: "var(--dp-color-ground)",
-                  fontSize: "1rem",
-                }}
+                className="np-input"
+                style={{ width: "100%", padding: "8px" }}
               />
             </div>
           </div>
@@ -278,11 +265,10 @@ export const AddGuestForm: React.FC<AddGuestFormProps> = ({
                 value={bulkText}
                 onChange={(e) => setBulkText(e.target.value)}
                 placeholder="Rohan Sharma&#10;Priya Patel&#10;Amit Verma"
+                className="np-textarea"
                 style={{
                   width: "100%",
                   padding: "8px",
-                  border: "var(--dp-border-hairline) solid var(--dp-color-rule)",
-                  backgroundColor: "var(--dp-color-ground)",
                   fontSize: "0.95rem",
                   fontFamily: "var(--dp-typography-mono)",
                 }}
@@ -305,13 +291,8 @@ export const AddGuestForm: React.FC<AddGuestFormProps> = ({
                   list="bulk-guest-group-suggestions"
                   value={bulkGroup}
                   onChange={(e) => setBulkGroup(e.target.value)}
-                  style={{
-                    width: "100%",
-                    padding: "8px",
-                    border: "var(--dp-border-hairline) solid var(--dp-color-rule)",
-                    backgroundColor: "var(--dp-color-ground)",
-                    fontSize: "1rem",
-                  }}
+                  className="np-input"
+                  style={{ width: "100%", padding: "8px" }}
                 />
                 <datalist id="bulk-guest-group-suggestions">
                   <option value="Family" />
@@ -325,9 +306,9 @@ export const AddGuestForm: React.FC<AddGuestFormProps> = ({
               <div
                 style={{
                   marginTop: "16px",
-                  padding: "8px",
-                  border: "var(--dp-border-hairline) solid var(--dp-color-rule)",
-                  backgroundColor: "var(--dp-color-ground)",
+                  padding: "12px",
+                  border: "1.5px solid var(--dp-color-ink)",
+                  backgroundColor: "var(--dp-color-canvas, #ffffff)",
                   fontSize: "0.9rem",
                 }}
               >
