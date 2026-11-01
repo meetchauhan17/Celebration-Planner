@@ -31,6 +31,10 @@ The platform provides comprehensive event planning across weddings, milestone bi
 - [Directory Structure](#directory-structure)
 - [Test Suite and Verification Matrix](#test-suite-and-verification-matrix)
 - [Operational Runbook](#operational-runbook)
+- [Free Deployment Guide](#free-deployment-guide)
+  - [Deploying on Vercel (Recommended)](#deploying-on-vercel-recommended)
+  - [Deploying on Netlify](#deploying-on-netlify)
+  - [Environment Variables on Production](#environment-variables-on-production)
 - [Limitations and Disclaimers](#limitations-and-disclaimers)
 - [License](#license)
 
@@ -699,6 +703,69 @@ npm run typecheck
 # Run Next.js ESLint
 npm run lint
 ```
+
+---
+
+## Free Deployment Guide
+
+Celebration & Event Planner is built entirely with client-side persistence (`localStorage`) and standard Next.js 14 API route handlers. It requires zero database provisioning and can be deployed at zero cost on several free hosting tiers.
+
+### Deploying on Vercel (Recommended)
+
+Vercel is the creator and maintainer of Next.js, providing native zero-configuration deployments on their free Hobby tier.
+
+#### Method A: Via Vercel Web Dashboard (1-Click)
+
+1. Go to [vercel.com](https://vercel.com) and sign in using your GitHub account (`meetchauhan17`).
+2. Click **"Add New..."** and select **"Project"**.
+3. Under "Import Git Repository", search for and select **`meetchauhan17/Celebration-Planner`**.
+4. In the Project Configuration screen:
+   - **Framework Preset**: Next.js (automatically detected).
+   - **Root Directory**: `./` (default).
+   - **Build Command**: `next build` (automatically detected).
+   - **Output Directory**: `.next` (automatically detected).
+5. (Optional) Expand **Environment Variables** and add:
+   - `GROQ_API_KEY`: Your Groq API key (`gsk_...`).
+   *Note: If omitted, the application will automatically run in offline mode using the deterministic fallback engine.*
+6. Click **"Deploy"**.
+7. Within 60 seconds, your site will be live on a free SSL-secured domain:
+   `https://celebration-planner-[unique-id].vercel.app`
+
+#### Method B: Via Vercel CLI
+
+```bash
+# 1. Install Vercel CLI globally
+npm install -g vercel
+
+# 2. Authenticate with your Vercel account
+vercel login
+
+# 3. Deploy the repository
+vercel
+
+# 4. Deploy to production
+vercel --prod
+```
+
+### Deploying on Netlify
+
+Netlify provides a generous free tier supporting Next.js App Router and serverless route handlers.
+
+1. Go to [netlify.com](https://www.netlify.com) and log in with your GitHub account.
+2. Select **"Add new site"** -> **"Import an existing project"**.
+3. Choose **GitHub** and grant access to **`meetchauhan17/Celebration-Planner`**.
+4. Netlify will auto-detect the configuration:
+   - **Base directory**: (leave blank for root)
+   - **Build command**: `npm run build`
+   - **Publish directory**: `.next`
+5. (Optional) In **Site configuration > Environment variables**, add `GROQ_API_KEY`.
+6. Click **"Deploy Celebration-Planner"**. Your application will be live at `https://[site-name].netlify.app`.
+
+### Environment Variables on Production
+
+| Variable | Required | Description |
+|---|---|---|
+| `GROQ_API_KEY` | Optional | Groq Cloud API key powering AI ideation and planning concierge. If omitted, built-in algorithmic fallbacks provide curated planning concepts with zero external calls. |
 
 ---
 

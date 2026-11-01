@@ -1,0 +1,4 @@
+# Ignore test suites and test configurations during Vercel deployment
+tests/
+vitest.config.ts
+.prettierrc
