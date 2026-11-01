@@ -106,6 +106,10 @@ export function subscribe(listener: () => void): () => void {
   };
 }
 
+/**
+ * Retrieves all stored celebration events from local browser storage.
+ * @returns Result containing array of PlannedEvent objects.
+ */
 export function listEvents(): Result<PlannedEvent[]> {
   if (typeof window === "undefined") {
     return err({ code: "UNAVAILABLE", message: "window is undefined" });
@@ -114,6 +118,11 @@ export function listEvents(): Result<PlannedEvent[]> {
   return ok(cachedEvents);
 }
 
+/**
+ * Retrieves a single celebration event by its unique brief ID.
+ * @param id - The unique ID of the event brief.
+ * @returns Result containing the matched PlannedEvent or null if not found.
+ */
 export function getEvent(id: string): Result<PlannedEvent | null> {
   const listRes = listEvents();
   if (!listRes.ok) return listRes;
@@ -121,6 +130,11 @@ export function getEvent(id: string): Result<PlannedEvent | null> {
   return ok(found);
 }
 
+/**
+ * Persists an event into local storage after full Zod schema validation.
+ * @param event - The PlannedEvent instance to validate and store.
+ * @returns Result containing the saved event or validation error.
+ */
 export function saveEvent(event: PlannedEvent): Result<PlannedEvent> {
   const valid = PlannedEventSchema.safeParse(event);
   if (!valid.success) {
@@ -136,6 +150,11 @@ export function saveEvent(event: PlannedEvent): Result<PlannedEvent> {
   return ok(event);
 }
 
+/**
+ * Deletes an event by its brief ID from local storage.
+ * @param id - The unique ID of the event to remove.
+ * @returns Result containing boolean indicating whether an event was deleted.
+ */
 export function deleteEvent(id: string): Result<boolean> {
   const listRes = listEvents();
   if (!listRes.ok) return listRes;
@@ -147,6 +166,10 @@ export function deleteEvent(id: string): Result<boolean> {
   return ok(true);
 }
 
+/**
+ * Wipes all event data from the application local storage namespace.
+ * @returns Result indicating success or failure.
+ */
 export function clearAllEvents(): Result<boolean> {
   if (typeof window === "undefined") {
     return err({ code: "UNAVAILABLE", message: "window is undefined" });
@@ -164,6 +187,12 @@ export function clearAllEvents(): Result<boolean> {
 
 export type EventPatch = Partial<Omit<PlannedEvent, "brief">> & { brief?: Partial<PlannedEvent["brief"]> };
 
+/**
+ * Surgically updates an existing event using a patch object or updater function.
+ * @param id - The ID of the event to update.
+ * @param patch - Partial fields to merge or a transformer function.
+ * @returns Result containing the updated PlannedEvent.
+ */
 export function updateEvent(
   id: string,
   patch: EventPatch | ((prev: PlannedEvent) => PlannedEvent)
@@ -179,6 +208,10 @@ export function updateEvent(
   return saveEvent(updatedCandidate);
 }
 
+/**
+ * React hook subscribing to reactive updates of all stored celebration events.
+ * @returns Array of PlannedEvent objects currently saved.
+ */
 export function useEvents(): PlannedEvent[] {
   return useSyncExternalStore(
     subscribe,
@@ -190,6 +223,11 @@ export function useEvents(): PlannedEvent[] {
   );
 }
 
+/**
+ * React hook subscribing to a single celebration event by ID.
+ * @param id - The unique event ID.
+ * @returns The PlannedEvent instance or null if not found.
+ */
 export function useEvent(id: string): PlannedEvent | null {
   const events = useEvents();
   return events.find((e) => e.brief.id === id) ?? null;

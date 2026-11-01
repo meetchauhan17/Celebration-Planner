@@ -48,7 +48,7 @@ function renderGuests(event = mockEvent) {
 describe("Guests Page (/events/[id]/guests)", () => {
   beforeEach(() => {
     vi.restoreAllMocks();
-    vi.spyOn(storage, "updateEvent").mockReturnValue({ ok: true, data: mockEvent } as any);
+    vi.spyOn(storage, "updateEvent").mockReturnValue({ ok: true, data: mockEvent });
   });
 
   it("renders lead strip with invited, confirmed, declined, pending and planned comparison", () => {

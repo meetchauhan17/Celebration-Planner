@@ -1,3 +1,8 @@
+/**
+ * @fileoverview Legacy budget calculation shims retained for backward compatibility.
+ * @deprecated Use generateBudget and summarizeBudget from "@/lib/engine/budget" for modern budgeting.
+ */
+
 import { BudgetItem, EventType } from "../domain";
 import { generateBudget } from "./budget";
 

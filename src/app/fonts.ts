@@ -23,6 +23,6 @@ export const organicReading = Instrument_Sans({
   display: "swap",
 });
 
-// Backward-compatible exports for any legacy references
+// Backward-compatible font exports for legacy references
 export const newsprintDisplay = organicDisplay;
 export const newsprintReading = organicReading;

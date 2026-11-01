@@ -1,3 +1,8 @@
+/**
+ * @fileoverview Legacy single-event storage shim retained for backward compatibility.
+ * @deprecated Use eventStore from "@/lib/storage/eventStore" for modern event persistence and subscriptions.
+ */
+
 import { CelebrationEvent, CelebrationEventSchema } from "../domain";
 
 const STORAGE_KEY_PREFIX = "celebration_planner_event_";

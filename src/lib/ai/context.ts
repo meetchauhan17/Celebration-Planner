@@ -20,6 +20,10 @@ export type EventInput =
 /**
  * Builds a compact, privacy-safe text summary of an event for AI model prompts.
  * PRIVACY RULE: Never include guest names or contact details. Only aggregate counts.
+ *
+ * @param event - Event data or brief to summarize.
+ * @param today - Current reference date for calculating days remaining and overdue tasks.
+ * @returns Anonymized, high-level string representation for LLM context.
  */
 export function buildEventContext(event: EventInput, today: Date = new Date()): string {
   const brief = "brief" in event && event.brief ? event.brief : (event as Partial<EventBrief>);

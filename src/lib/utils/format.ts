@@ -2,6 +2,9 @@ import { PlannedEvent } from "../domain";
 
 /**
  * Format a number as currency, defaulting to Indian Rupee (₹).
+ * @param amount - Number to format.
+ * @param currency - 3-letter currency code (e.g., 'INR', 'USD'). Defaults to 'INR'.
+ * @returns Localized currency string.
  */
 export function formatCurrency(amount: number, currency = "INR"): string {
   const rounded = Math.round(amount);
@@ -12,6 +15,8 @@ export function formatCurrency(amount: number, currency = "INR"): string {
 /**
  * Formats an ISO date string (YYYY-MM-DD) into an editorial human-readable format.
  * Avoids timezone drift by parsing components directly.
+ * @param dateStr - ISO date string.
+ * @returns Human-friendly formatted date string e.g. "Mar 12, 2027".
  */
 export function formatDate(dateStr: string): string {
   if (!dateStr) return "";
@@ -39,6 +44,8 @@ const TIMELINE_MONTHS = [
 
 /**
  * Formats a date into consistent, unambiguous format e.g. "12 Mar 2027".
+ * @param dateStr - ISO date string.
+ * @returns Standardized timeline date string.
  */
 export function formatTimelineDate(dateStr: string): string {
   if (!dateStr) return "";
@@ -57,6 +64,9 @@ export function formatTimelineDate(dateStr: string): string {
 /**
  * Calculates remaining days from today to the target ISO date.
  * Positive = future, 0 = today, negative = past.
+ * @param targetDateStr - Target event ISO date string.
+ * @param today - Current reference date.
+ * @returns Number of days difference.
  */
 export function getDaysDifference(targetDateStr: string, today = new Date()): number {
   if (!targetDateStr) return 0;
@@ -84,6 +94,8 @@ export function getDaysDifference(targetDateStr: string, today = new Date()): nu
 
 /**
  * Returns human-readable label for days remaining or elapsed.
+ * @param days - Number of days difference.
+ * @returns Formatted string e.g. "12 days left", "Today", or "3 days ago".
  */
 export function formatDaysRemaining(days: number): string {
   if (days === 0) return "Today";
@@ -106,6 +118,8 @@ export interface EventProgressSummary {
 
 /**
  * Computes progress stats across tasks, vendors, and RSVPs for an event.
+ * @param event - Planned celebration event.
+ * @returns EventProgressSummary containing percentage and status totals.
  */
 export function calculateEventProgress(event: PlannedEvent): EventProgressSummary {
   const totalTasks = event.tasks.length;

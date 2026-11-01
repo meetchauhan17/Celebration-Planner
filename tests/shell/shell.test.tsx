@@ -26,7 +26,7 @@ vi.mock("next/navigation", () => ({
 describe("Shared App Shell Components", () => {
   beforeEach(() => {
     vi.clearAllMocks();
-    (navigation.usePathname as any).mockReturnValue("/");
+    vi.mocked(navigation.usePathname).mockReturnValue("/");
   });
 
   describe("SkipLink", () => {
@@ -40,7 +40,7 @@ describe("Shared App Shell Components", () => {
 
   describe("PrimaryNav", () => {
     it("renders <nav aria-label='Primary'> with all 3 primary links", () => {
-      (navigation.usePathname as any).mockReturnValue("/");
+      vi.mocked(navigation.usePathname).mockReturnValue("/");
       render(<PrimaryNav />);
 
       const nav = screen.getByRole("navigation", { name: "Primary" });
@@ -57,19 +57,19 @@ describe("Shared App Shell Components", () => {
 
     it("applies aria-current='page' to active link based on current path", () => {
       // 1. Home active
-      (navigation.usePathname as any).mockReturnValue("/");
+      vi.mocked(navigation.usePathname).mockReturnValue("/");
       const { rerender } = render(<PrimaryNav />);
       expect(screen.getByRole("link", { name: "Home" })).toHaveAttribute("aria-current", "page");
       expect(screen.getByRole("link", { name: "Plan an event" })).not.toHaveAttribute("aria-current");
 
       // 2. Plan active
-      (navigation.usePathname as any).mockReturnValue("/plan");
+      vi.mocked(navigation.usePathname).mockReturnValue("/plan");
       rerender(<PrimaryNav />);
       expect(screen.getByRole("link", { name: "Plan an event" })).toHaveAttribute("aria-current", "page");
       expect(screen.getByRole("link", { name: "Home" })).not.toHaveAttribute("aria-current");
 
       // 3. Events active
-      (navigation.usePathname as any).mockReturnValue("/events");
+      vi.mocked(navigation.usePathname).mockReturnValue("/events");
       rerender(<PrimaryNav />);
       expect(screen.getByRole("link", { name: "My events" })).toHaveAttribute("aria-current", "page");
     });
@@ -77,17 +77,17 @@ describe("Shared App Shell Components", () => {
 
   describe("EventSubNav", () => {
     it("does not render when not on an /events/[id]/* route", () => {
-      (navigation.usePathname as any).mockReturnValue("/");
+      vi.mocked(navigation.usePathname).mockReturnValue("/");
       const { container } = render(<EventSubNav />);
       expect(container.firstChild).toBeNull();
 
-      (navigation.usePathname as any).mockReturnValue("/plan");
+      vi.mocked(navigation.usePathname).mockReturnValue("/plan");
       const { container: planContainer } = render(<EventSubNav />);
       expect(planContainer.firstChild).toBeNull();
     });
 
     it("renders <nav aria-label='Event sections'> with 8 links when on an event route", () => {
-      (navigation.usePathname as any).mockReturnValue("/events/abc-123/budget");
+      vi.mocked(navigation.usePathname).mockReturnValue("/events/abc-123/budget");
       render(<EventSubNav />);
 
       const nav = screen.getByRole("navigation", { name: "Event sections" });
@@ -106,7 +106,7 @@ describe("Shared App Shell Components", () => {
 
   describe("ShellHeader", () => {
     it("renders masthead title and primary navigation", () => {
-      (navigation.usePathname as any).mockReturnValue("/");
+      vi.mocked(navigation.usePathname).mockReturnValue("/");
       render(<ShellHeader />);
 
       expect(screen.getByText("Celebration Planner")).toBeInTheDocument();
@@ -114,7 +114,7 @@ describe("Shared App Shell Components", () => {
     });
 
     it("ensures exactly one <h1> on home page via Masthead title", () => {
-      (navigation.usePathname as any).mockReturnValue("/");
+      vi.mocked(navigation.usePathname).mockReturnValue("/");
       render(<ShellHeader />);
 
       const headings = screen.getAllByRole("heading", { level: 1 });
@@ -123,7 +123,7 @@ describe("Shared App Shell Components", () => {
     });
 
     it("renders Masthead title as div on subpages to allow page content to own the single <h1>", () => {
-      (navigation.usePathname as any).mockReturnValue("/plan");
+      vi.mocked(navigation.usePathname).mockReturnValue("/plan");
       render(
         <div>
           <ShellHeader />

@@ -59,11 +59,11 @@ describe("POST /api/assistant", () => {
 
     // Check system prompt and delimiter wrapping
     const callArgs = mockChatCreate.mock.calls[0][0];
-    const systemMsg = callArgs.messages.find((m: any) => m.role === "system");
+    const systemMsg = callArgs.messages.find((m: { role: string; content: string }) => m.role === "system");
     expect(systemMsg.content).toContain("practical event planning assistant");
     expect(systemMsg.content).toContain("<event_summary>");
 
-    const userMsg = callArgs.messages.find((m: any) => m.role === "user");
+    const userMsg = callArgs.messages.find((m: { role: string; content: string }) => m.role === "user");
     expect(userMsg.content).toContain("<user_data>");
     expect(userMsg.content).toContain("What should I prioritize this week?");
   });

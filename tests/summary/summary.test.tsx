@@ -119,7 +119,7 @@ describe("Summary Page (/events/[id]/summary)", () => {
   });
 
   it("handles valid JSON plan import with fresh ID assignment", async () => {
-    const saveSpy = vi.spyOn(storage, "saveEvent").mockReturnValue({ ok: true, data: sampleEvent } as any);
+    const saveSpy = vi.spyOn(storage, "saveEvent").mockReturnValue({ ok: true, data: sampleEvent });
     renderSummary();
 
     const fileInput = screen.getByLabelText("Import plan file input");
@@ -175,7 +175,7 @@ describe("Summary Page (/events/[id]/summary)", () => {
   });
 
   it("wipes storage when 'Delete all my data' is confirmed", () => {
-    const clearSpy = vi.spyOn(storage, "clearAllEvents").mockReturnValue({ ok: true, data: true } as any);
+    const clearSpy = vi.spyOn(storage, "clearAllEvents").mockReturnValue({ ok: true, data: true });
     renderSummary();
 
     // First click asks for confirmation

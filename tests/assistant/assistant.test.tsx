@@ -86,9 +86,11 @@ describe("Assistant Page (/events/[id]/assistant)", () => {
   });
 
   it("sends question to /api/assistant with buildEventContext without guest names, preserving line breaks", async () => {
-    let capturedBody: any = null;
-    global.fetch = vi.fn().mockImplementation(async (url, init) => {
-      capturedBody = JSON.parse(init.body);
+    const captured: { body: { eventSummary?: string } | null } = { body: null };
+    global.fetch = vi.fn().mockImplementation(async (_url: RequestInfo | URL, init?: RequestInit) => {
+      if (init?.body && typeof init.body === "string") {
+        captured.body = JSON.parse(init.body);
+      }
       return {
         ok: true,
         status: 200,
@@ -96,7 +98,7 @@ describe("Assistant Page (/events/[id]/assistant)", () => {
           message: "Here is your plan update:\n- Catering is booked.\n- Book DJ soon.",
           source: "ai",
         }),
-      };
+      } as unknown as Response;
     });
 
     renderAssistant();
@@ -118,9 +120,9 @@ describe("Assistant Page (/events/[id]/assistant)", () => {
     });
 
     // Verify privacy: captured eventSummary MUST NOT include guest names ("Secret VIP")
-    expect(capturedBody).not.toBeNull();
-    expect(capturedBody.eventSummary).not.toContain("Secret VIP");
-    expect(capturedBody.eventSummary).toContain("RSVPs: 1 confirmed");
+    expect(captured.body).not.toBeNull();
+    expect(captured.body?.eventSummary).not.toContain("Secret VIP");
+    expect(captured.body?.eventSummary).toContain("RSVPs: 1 confirmed");
 
     // Line breaks preserved in answer
     const replyParagraph = screen.getByText(/Here is your plan update:/i);
@@ -135,7 +137,7 @@ describe("Assistant Page (/events/[id]/assistant)", () => {
         message: "Fallback answer based on plan data.",
         source: "fallback",
       }),
-    } as any);
+    } as unknown as Response);
 
     renderAssistant();
 
@@ -156,7 +158,7 @@ describe("Assistant Page (/events/[id]/assistant)", () => {
       ok: false,
       status: 429,
       json: async () => ({ error: "Too many requests" }),
-    } as any);
+    } as unknown as Response);
 
     renderAssistant();
 
@@ -182,7 +184,7 @@ describe("Assistant Page (/events/[id]/assistant)", () => {
         message: "First answer.",
         source: "ai",
       }),
-    } as any);
+    } as unknown as Response);
 
     renderAssistant();
 

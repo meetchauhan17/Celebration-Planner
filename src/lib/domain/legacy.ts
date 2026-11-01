@@ -1,3 +1,8 @@
+/**
+ * @fileoverview Legacy domain types retained strictly for backward compatibility with v0.1 data schemas.
+ * @deprecated Use PlannedEvent and EventBrief from "@/lib/domain" for all modern event planning logic.
+ */
+
 import { z } from "zod";
 
 export const LegacyEventTypeSchema = z.enum([

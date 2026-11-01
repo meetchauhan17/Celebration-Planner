@@ -20,6 +20,8 @@ export function resetRateLimitStore(): void {
 
 /**
  * Extracts client IP from incoming request headers or falls back to local IP.
+ * @param request - Next.js incoming HTTP request.
+ * @returns Client IP address string.
  */
 export function getClientIp(request: Request): string {
   const forwarded = request.headers.get("x-forwarded-for");
@@ -34,6 +36,10 @@ export function getClientIp(request: Request): string {
 
 /**
  * Enforces per-IP sliding window rate limiting.
+ * @param ip - Client identifier/IP address.
+ * @param limit - Maximum requests allowed within window (defaults to 20).
+ * @param windowMs - Time window in milliseconds (defaults to 10 minutes).
+ * @returns Rate limit status with remaining tokens and reset timestamp.
  */
 export function checkRateLimit(
   ip: string,
@@ -69,6 +75,9 @@ export function checkRateLimit(
 /**
  * Parses and strictly validates JSON body against size limits and Zod schema.
  * Rejects oversized payloads (>20KB) and invalid schemas with generic error messages.
+ * @param request - Next.js Request object.
+ * @param schema - Target Zod validation schema.
+ * @returns Success status with strongly typed data or error description.
  */
 export async function parseSecureJsonBody<T>(
   request: Request,

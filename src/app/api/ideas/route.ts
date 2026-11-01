@@ -10,6 +10,19 @@ import {
   IdeasResponseSchema,
 } from "@/lib/ai/schemas";
 
+/**
+ * API Route Handler: /api/ideas
+ * Generates structured celebration themes, dining concepts, decor palettes, and activities.
+ *
+ * Security & Reliability:
+ * - In-memory IP rate limiting (60 requests / minute)
+ * - Strict Zod schema validation for input payload and AI output JSON structure
+ * - Prompt injection defensive boundary tags (<user_data>, <event_summary>)
+ * - Deterministic fallback suggestions when offline or unconfigured
+ *
+ * @param request - Next.js Request object with IdeasRequest payload.
+ * @returns JSON Response containing structured ideas array and source label.
+ */
 export async function POST(request: Request): Promise<Response> {
   const ip = getClientIp(request);
   const rateResult = checkRateLimit(ip);

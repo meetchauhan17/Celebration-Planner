@@ -9,7 +9,7 @@ import {
   calculateEstimatedVendorTotal,
   getNextToBookCategory,
 } from "../../src/lib/engine/vendors";
-import { EventBrief } from "../../src/lib/domain";
+import { EventBrief, Vendor } from "../../src/lib/domain";
 
 describe("Engine extra coverage tests", () => {
   it("covers explanation branches for diverse priorities and catering floor check", () => {
@@ -74,13 +74,13 @@ describe("Engine extra coverage tests", () => {
   });
 
   it("covers legacy vendor functions", () => {
-    const legacyVendors: any[] = [
+    const legacyVendors: Vendor[] = [
       { id: "1", name: "V1", category: "catering", status: "booked", estimatedCost: 1000 },
       { id: "2", name: "V2", category: "venue", status: "quoted", estimatedCost: 2000 },
       { id: "3", name: "V3", category: "catering", status: "researching", estimatedCost: 500 },
     ];
 
-    expect(filterVendorsByCategory(legacyVendors, "catering" as any)).toHaveLength(2);
+    expect(filterVendorsByCategory(legacyVendors, "catering")).toHaveLength(2);
     const counts = getVendorStatusCounts(legacyVendors);
     expect(counts.booked).toBe(1);
     expect(counts.quoted).toBe(1);

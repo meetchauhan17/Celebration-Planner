@@ -41,6 +41,14 @@ export interface BudgetPlanResult {
   allocations: Record<string, number>;
 }
 
+/**
+ * Generates a complete mathematical budget plan with deterministic category allocations.
+ * Applies priority adjustments, venue environment adjustments, city tier adjustments,
+ * enforces per-guest catering floors, and guarantees a 4% minimum contingency reserve.
+ *
+ * @param input - The budget generation parameters including event type, budget cap, guest count, priorities, venue type, and city tier.
+ * @returns A BudgetPlanResult containing calculated budget lines, any warnings, per-guest cost, and allocation percentages.
+ */
 export function generateBudget(input: GenerateBudgetInput): BudgetPlanResult {
   const { type, totalBudget, guestCount, priorities = [], venueType, cityTier } = input;
   const warnings: string[] = [];
@@ -145,6 +153,14 @@ export interface BudgetSummaryReport {
   overCategories: string[];
 }
 
+/**
+ * Computes aggregate summary metrics for a list of budget lines.
+ * Calculates total planned expenditure, actual expenditure, net variance,
+ * and identifies categories that exceed planned amounts by more than 10%.
+ *
+ * @param lines - Array of current budget lines.
+ * @returns An aggregated BudgetSummaryReport.
+ */
 export function summarizeBudget(lines: BudgetLine[]): BudgetSummaryReport {
   let plannedTotal = 0;
   let actualTotal = 0;

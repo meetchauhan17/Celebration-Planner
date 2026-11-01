@@ -16,6 +16,12 @@ export interface VendorProgress {
   percentBooked: number;
 }
 
+/**
+ * Generates initial vendor checklist items based on event type, venue setting, and scale.
+ *
+ * @param brief - The event brief configuration.
+ * @returns Array of VendorItem ready to be tracked in the event store.
+ */
 export function generateVendorChecklist(brief: EventBrief): VendorItem[] {
   const templates: VendorTemplate[] = [...(BASE_VENDORS[brief.type] || BASE_VENDORS.wedding)];
 
@@ -83,6 +89,12 @@ export function generateVendorChecklist(brief: EventBrief): VendorItem[] {
   }));
 }
 
+/**
+ * Calculates aggregate vendor booking progress.
+ *
+ * @param items - Array of vendor items.
+ * @returns VendorProgress with counts per status and percent booked.
+ */
 export function vendorProgress(items: VendorItem[]): VendorProgress {
   const counts: Record<VendorStatus, number> = {
     "to-contact": 0,
@@ -256,11 +268,16 @@ export function getNextToBookCategory(
 }
 
 
-// Backward-compatible exports
+/**
+ * @deprecated Legacy vendor filter utility. Use VendorItem category filtering instead.
+ */
 export function filterVendorsByCategory(vendors: Vendor[], category: VendorCategory): Vendor[] {
   return vendors.filter((v) => v.category === category);
 }
 
+/**
+ * @deprecated Legacy status counter. Use vendorProgress() instead.
+ */
 export function getVendorStatusCounts(vendors: Vendor[]): Record<string, number> {
   const counts: Record<string, number> = { researching: 0, contacted: 0, quoted: 0, booked: 0, declined: 0 };
   for (const v of vendors) {
@@ -269,6 +286,9 @@ export function getVendorStatusCounts(vendors: Vendor[]): Record<string, number>
   return counts;
 }
 
+/**
+ * @deprecated Legacy vendor cost estimator. Use quote tracking on VendorItem instead.
+ */
 export function calculateEstimatedVendorTotal(vendors: Vendor[]): number {
   return vendors.filter((v) => v.status === "booked" || v.status === "quoted").reduce((sum, v) => sum + (v.estimatedCost ?? 0), 0);
 }

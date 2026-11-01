@@ -84,7 +84,7 @@ function renderIdeas(event = sampleEvent) {
 describe("Ideas Page (/events/[id]/ideas)", () => {
   beforeEach(() => {
     vi.restoreAllMocks();
-    vi.spyOn(storage, "updateEvent").mockReturnValue({ ok: true, data: sampleEvent } as any);
+    vi.spyOn(storage, "updateEvent").mockReturnValue({ ok: true, data: sampleEvent });
   });
 
   afterEach(() => {
@@ -113,7 +113,7 @@ describe("Ideas Page (/events/[id]/ideas)", () => {
         ideas: mockGeneratedIdeas,
         source: "ai",
       }),
-    } as any);
+    } as unknown as Response);
 
     renderIdeas();
 
@@ -162,7 +162,7 @@ describe("Ideas Page (/events/[id]/ideas)", () => {
         ideas: mockGeneratedIdeas,
         source: "fallback",
       }),
-    } as any);
+    } as unknown as Response);
 
     renderIdeas();
 
@@ -180,7 +180,7 @@ describe("Ideas Page (/events/[id]/ideas)", () => {
       ok: false,
       status: 429,
       json: async () => ({ error: "Too many requests" }),
-    } as any);
+    } as unknown as Response);
 
     renderIdeas();
 

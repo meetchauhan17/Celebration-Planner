@@ -21,6 +21,15 @@ const toMidnight = (d: Date | string): number => {
   return new Date(date.getFullYear(), date.getMonth(), date.getDate()).getTime();
 };
 
+/**
+ * Generates an event timeline backwards from the target event date.
+ * Incorporates conditional tasks based on venue environment, dietary needs, and guest scale.
+ * If the event is short-notice, dynamically applies compressed lead-time scaling.
+ *
+ * @param brief - The event brief containing date, event type, guest scale, and preferences.
+ * @param today - Current reference date for timeline calculations (defaults to today).
+ * @returns GeneratedTimeline containing scheduled milestone tasks and feasibility diagnostic report.
+ */
 export function generateTimeline(brief: EventBrief, today: Date | string = new Date()): GeneratedTimeline {
   const todayMs = toMidnight(today);
   const eventMs = toMidnight(brief.date);
@@ -132,16 +141,35 @@ export interface TimelineProgress {
   pendingTasks: number;
 }
 
+/**
+ * Calculates aggregate task progress metrics across a collection of timeline tasks.
+ *
+ * @param tasks - Array of timeline tasks or partial task items.
+ * @returns TimelineProgress with total, completed, percentage, and pending counts.
+ */
 export function calculateTaskProgress(tasks: Array<Partial<TimelineTask> & { status?: string; completed?: boolean }>): TimelineProgress {
   if (tasks.length === 0) return { totalTasks: 0, completedTasks: 0, percentage: 0, pendingTasks: 0 };
   const completed = tasks.filter((t) => t.status === "done" || t.completed === true).length;
   return { totalTasks: tasks.length, completedTasks: completed, percentage: Math.round((completed / tasks.length) * 100), pendingTasks: tasks.length - completed };
 }
 
+/**
+ * Sorts timeline tasks chronologically by due date in ascending order.
+ *
+ * @param tasks - Array of timeline tasks to sort.
+ * @returns A new array of tasks ordered by dueDate.
+ */
 export function sortTasksByDueDate(tasks: TimelineTask[]): TimelineTask[] {
   return [...tasks].sort((a, b) => new Date(a.dueDate).getTime() - new Date(b.dueDate).getTime());
 }
 
+/**
+ * Generates default planning milestone tasks for a given event date and event type.
+ *
+ * @param eventDateString - ISO date string of the event.
+ * @param eventType - The celebration event type.
+ * @returns Array of task milestone templates without system IDs.
+ */
 export function generateDefaultMilestones(eventDateString: string, eventType: EventType): Omit<TimelineTask, "id">[] {
   const dummyBrief: EventBrief = {
     id: "00000000-0000-0000-0000-000000000000",

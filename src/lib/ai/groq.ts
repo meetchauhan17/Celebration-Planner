@@ -5,6 +5,7 @@ export const GROQ_MODEL = "llama-3.3-70b-versatile";
 
 /**
  * Validates if a usable Groq API key is present in environment variables.
+ * @returns Boolean flag indicating whether the API key is configured.
  */
 export function checkAiConfigured(): boolean {
   const key = process.env.GROQ_API_KEY;
@@ -24,6 +25,7 @@ export const isAiConfigured: boolean = checkAiConfigured();
 /**
  * Creates or retrieves the thin Groq SDK client instance.
  * Configured with 15-second timeout and 2 retries with exponential backoff.
+ * @returns Groq SDK client instance or null if unconfigured.
  */
 export function createGroqClient(): Groq | null {
   if (!checkAiConfigured()) {

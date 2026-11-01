@@ -7,6 +7,19 @@ import {
 } from "@/lib/ai/security";
 import { AssistantRequestSchema } from "@/lib/ai/schemas";
 
+/**
+ * API Route Handler: /api/assistant
+ * Handles conversational queries regarding celebration planning, logistics, and budget tradeoffs.
+ *
+ * Security & Reliability:
+ * - In-memory IP rate limiting (60 requests / minute)
+ * - Strict Zod request body validation with payload size limits (CWE-400 defense)
+ * - Anonymized system context (Zero PII transmission)
+ * - Deterministic fallback response when unauthenticated, offline, or rate-limited
+ *
+ * @param request - Next.js Request object with AssistantRequest payload.
+ * @returns JSON Response containing assistant reply and data source origin.
+ */
 export async function POST(request: Request): Promise<Response> {
   const ip = getClientIp(request);
   const rateResult = checkRateLimit(ip);

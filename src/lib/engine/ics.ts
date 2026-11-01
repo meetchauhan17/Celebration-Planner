@@ -29,7 +29,6 @@ export function foldIcsLine(line: string): string {
   // Slice at byte boundaries
   const parts: string[] = [];
   let currentBytes = 0;
-  let currentStart = 0;
   const chars = Array.from(line);
   let isFirst = true;
 
