@@ -1,5 +1,13 @@
 # Celebration & Event Planner
 
+[![Next.js 14](https://img.shields.io/badge/Next.js-14.2-black?style=flat&logo=next.js)](https://nextjs.org/)
+[![TypeScript 5](https://img.shields.io/badge/TypeScript-5.6-blue?style=flat&logo=typescript)](https://www.typescriptlang.org/)
+[![Design System](https://img.shields.io/badge/Design%20System-Organic-35422d?style=flat)](https://github.com/meetchauhan17/Celebration-Planner)
+[![Tests Passing](https://img.shields.io/badge/Tests-243%20Passed-success?style=flat&logo=vitest)](https://github.com/meetchauhan17/Celebration-Planner)
+[![Accessibility](https://img.shields.io/badge/Accessibility-WCAG%202.1%20AA-success?style=flat)](https://www.w3.org/WAI/WCAG21/quickref/)
+[![License MIT](https://img.shields.io/badge/License-MIT-lightgrey?style=flat)](./LICENSE)
+[![Live Production](https://img.shields.io/badge/Deployment-Live%20on%20Vercel-success?style=flat&logo=vercel)](https://celebration-planner-beta.vercel.app)
+
 An editorial-grade celebration coordination platform and deterministic financial decision engine built with Next.js 14, TypeScript, and the Organic Design System.
 
 The platform provides comprehensive event planning across weddings, milestone birthdays, and community festivals. It couples pure mathematical allocation algorithms with optional, privacy-isolated generative AI guidance to produce audit-ready budgets, backward-scheduled milestone timelines, vendor procurement trackers, catering headcount formulas, and printable broadsheet summaries.
@@ -10,6 +18,7 @@ The platform provides comprehensive event planning across weddings, milestone bi
 
 ## Table of Contents
 
+- [Visual Interface Tour](#visual-interface-tour)
 - [Architectural Philosophy](#architectural-philosophy)
 - [Two-Layer Architecture](#two-layer-architecture)
 - [Deterministic Calculation Engines](#deterministic-calculation-engines)
@@ -42,9 +51,31 @@ The platform provides comprehensive event planning across weddings, milestone bi
 
 ---
 
+## Visual Interface Tour
+
+### Home Editorial Spread
+The front editorial spread introduces the Organic Design System worktable, featuring high-contrast serif headlines, tactile paper grain texture, factual summary strips, and accessible planning entry points.
+
+![Celebration & Event Planner Home Editorial Spread](./public/screenshots/home-preview.png)
+
+### Multi-Step Accessible Planning Wizard
+The four-step planning wizard (*The Basics*, *Scale and Place*, *Money*, *Preferences*) provides real-time per-guest cost estimation, catering floor threshold validation, priority point boosters, and keyboard-accessible error boundaries.
+
+![Multi-Step Planning Wizard](./public/screenshots/plan-wizard.png)
+
+### Celebrations Directory
+The multi-event management repository categorizes celebrations into upcoming and past events with event completion progress meters, one-click overview links, and safe two-step modal deletion safeguards.
+
+![Celebrations Directory](./public/screenshots/events-directory.png)
+
+---
+
 ## Architectural Philosophy
 
 Most consumer event planning tools conflate mathematical reality with generative suggestion, resulting in inaccurate budget projections, fragile timelines, and unnecessary exposure of personal attendee data to third-party language models.
+
+> [!NOTE]
+> All financial targets, payment schedules, lead-time deadlines, catering counts, and vendor comparisons are calculated through pure, deterministic TypeScript functions that execute entirely within the client browser. No financial records or attendee data are ever sent to an external server.
 
 Celebration & Event Planner enforces a strict architectural boundary:
 1. **Mathematical Certainty First**: All financial targets, payment schedules, lead-time deadlines, catering counts, and vendor comparisons are calculated through pure, deterministic TypeScript functions that execute entirely within the client browser.
@@ -156,6 +187,9 @@ If the calculated per-guest catering cost is below the floor:
 $$\text{per\_guest} = \frac{\text{alloc}_{\text{catering}} \times \text{totalBudget}}{\text{guestCount}} < \text{floor}$$
 
 The engine automatically reallocates discretionary funds from `decor` and `entertainment` to bring catering up to the minimum viable floor, surfacing a descriptive notice to the user.
+
+> [!IMPORTANT]
+> Catering viability floors and the 4% contingency reserve are non-negotiable constraints. If total budget is insufficient to satisfy both conditions simultaneously, the allocation engine flags an audit warning and preserves the safety floor.
 
 #### 6. Whole Currency Rounding
 
@@ -334,6 +368,9 @@ All AI responses are validated against runtime Zod schemas:
 - **Planning Concierge (`/api/assistant`)**: Validates markdown advice, logistical recommendations, and contingency checklists.
 
 #### Algorithmic Deterministic Fallback Engine
+
+> [!TIP]
+> Zero-telemetry offline resilience: If `GROQ_API_KEY` is omitted, rate limits are hit, or the device is offline, built-in deterministic suggestion engines supply curated event recommendations. Every card displays an explicit provenance badge (*AI* vs *Deterministic Engine*).
 
 If any of the following occur:
 - Groq API key is not configured
