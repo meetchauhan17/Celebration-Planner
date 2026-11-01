@@ -4,6 +4,8 @@ An editorial-grade celebration coordination platform and deterministic financial
 
 The platform provides comprehensive event planning across weddings, milestone birthdays, and community festivals. It couples pure mathematical allocation algorithms with optional, privacy-isolated generative AI guidance to produce audit-ready budgets, backward-scheduled milestone timelines, vendor procurement trackers, catering headcount formulas, and printable broadsheet summaries.
 
+**Live Production Deployment**: [https://celebration-planner-beta.vercel.app](https://celebration-planner-beta.vercel.app)
+
 ---
 
 ## Table of Contents
