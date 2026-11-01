@@ -33,12 +33,14 @@ export const AddVendorForm: React.FC<AddVendorFormProps> = ({ onAddVendor }) => 
       return;
     }
 
+    const parsedQuote = quoteAmount.trim() !== "" ? Number(quoteAmount) : undefined;
+
     const newVendor: VendorItem = {
       id: `custom-ven-${Date.now()}`,
       category: category.trim(),
       label: label.trim(),
       status,
-      quoteAmount: quoteAmount ? Number(quoteAmount) : undefined,
+      quoteAmount: parsedQuote !== undefined && !isNaN(parsedQuote) && parsedQuote >= 0 ? parsedQuote : undefined,
       contact: contact.trim() || undefined,
       notes: notes.trim() || undefined,
       whatToAsk:

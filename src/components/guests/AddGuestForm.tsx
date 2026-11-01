@@ -90,8 +90,8 @@ export const AddGuestForm: React.FC<AddGuestFormProps> = ({
       return;
     }
 
-    const created: Guest[] = parsedBulkNames.map((nameStr) => ({
-      id: crypto.randomUUID ? crypto.randomUUID() : `g-${Date.now()}-${Math.random().toString(36).substring(2, 7)}`,
+    const created: Guest[] = parsedBulkNames.map((nameStr, idx) => ({
+      id: crypto.randomUUID ? crypto.randomUUID() : `g-${Date.now()}-${idx}-${Math.random().toString(36).substring(2, 7)}`,
       name: nameStr,
       group: bulkGroup.trim() || "General",
       rsvp: "pending",

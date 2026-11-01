@@ -25,6 +25,21 @@ export const GuestListingRow: React.FC<GuestListingRowProps> = ({
   const [editDietary, setEditDietary] = useState(guest.dietary || "none");
   const [editPlusOnes, setEditPlusOnes] = useState(guest.plusOnes);
 
+  React.useEffect(() => {
+    setEditName(guest.name);
+    setEditGroup(guest.group);
+    setEditDietary(guest.dietary || "none");
+    setEditPlusOnes(guest.plusOnes);
+  }, [guest]);
+
+  const handleCancel = () => {
+    setEditName(guest.name);
+    setEditGroup(guest.group);
+    setEditDietary(guest.dietary || "none");
+    setEditPlusOnes(guest.plusOnes);
+    setIsEditing(false);
+  };
+
   const handleSave = () => {
     onUpdateGuest({
       ...guest,
@@ -180,7 +195,7 @@ export const GuestListingRow: React.FC<GuestListingRowProps> = ({
                   <Button variant="default" onClick={handleSave}>
                     Save
                   </Button>
-                  <Button variant="secondary" onClick={() => setIsEditing(false)}>
+                  <Button variant="secondary" onClick={handleCancel}>
                     Cancel
                   </Button>
                 </div>

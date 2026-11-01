@@ -32,7 +32,8 @@ export const SummaryActions: React.FC<SummaryActionsProps> = ({ event }) => {
     const url = URL.createObjectURL(blob);
     const link = document.createElement("a");
     link.href = url;
-    link.download = `${event.brief.name.toLowerCase().replace(/[^a-z0-9]/g, "-")}.ics`;
+    const cleanName = event.brief.name.toLowerCase().replace(/[^a-z0-9]/g, "-").replace(/-+/g, "-").replace(/^-|-$/g, "");
+    link.download = `${cleanName || "celebration-event"}.ics`;
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
@@ -47,7 +48,8 @@ export const SummaryActions: React.FC<SummaryActionsProps> = ({ event }) => {
     const url = URL.createObjectURL(blob);
     const link = document.createElement("a");
     link.href = url;
-    link.download = `${event.brief.name.toLowerCase().replace(/[^a-z0-9]/g, "-")}-plan.json`;
+    const cleanName = event.brief.name.toLowerCase().replace(/[^a-z0-9]/g, "-").replace(/-+/g, "-").replace(/^-|-$/g, "");
+    link.download = `${cleanName || "celebration-event"}-plan.json`;
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);

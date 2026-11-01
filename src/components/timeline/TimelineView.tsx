@@ -135,9 +135,15 @@ export const TimelineView: React.FC<TimelineViewProps> = ({ event }) => {
       }
     }
 
-    // Sort within each group by due date
+    // Sort within each group by due date (critical tasks first on same day)
     for (const key of Object.keys(partitioned) as TimelineGroupKey[]) {
-      partitioned[key].sort((a, b) => a.dueDate.localeCompare(b.dueDate));
+      partitioned[key].sort((a, b) => {
+        const dateDiff = a.dueDate.localeCompare(b.dueDate);
+        if (dateDiff !== 0) return dateDiff;
+        if (a.isCritical && !b.isCritical) return -1;
+        if (!a.isCritical && b.isCritical) return 1;
+        return a.title.localeCompare(b.title);
+      });
     }
 
     return partitioned;
