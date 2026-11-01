@@ -53,20 +53,10 @@ The platform provides comprehensive event planning across weddings, milestone bi
 
 ## Visual Interface Tour
 
-### Home Editorial Spread
-The front editorial spread introduces the Organic Design System worktable, featuring high-contrast serif headlines, tactile paper grain texture, factual summary strips, and accessible planning entry points.
-
-![Celebration & Event Planner Home Editorial Spread](./public/screenshots/home-preview.png)
-
-### Multi-Step Accessible Planning Wizard
-The four-step planning wizard (*The Basics*, *Scale and Place*, *Money*, *Preferences*) provides real-time per-guest cost estimation, catering floor threshold validation, priority point boosters, and keyboard-accessible error boundaries.
-
-![Multi-Step Planning Wizard](./public/screenshots/plan-wizard.png)
-
-### Celebrations Directory
-The multi-event management repository categorizes celebrations into upcoming and past events with event completion progress meters, one-click overview links, and safe two-step modal deletion safeguards.
-
-![Celebrations Directory](./public/screenshots/events-directory.png)
+| Home Editorial Spread | Multi-Step Planning Wizard | Celebrations Directory |
+| :---: | :---: | :---: |
+| [![Home Editorial Spread](./public/screenshots/home-preview.png)](https://celebration-planner-beta.vercel.app) | [![Multi-Step Planning Wizard](./public/screenshots/plan-wizard.png)](https://celebration-planner-beta.vercel.app/plan) | [![Celebrations Directory](./public/screenshots/events-directory.png)](https://celebration-planner-beta.vercel.app/events) |
+| Front editorial spread introducing the Organic Design System worktable, tactile paper grain texture, and planning entry points. | Four-step accessible wizard with live per-guest cost estimation, catering floor threshold checks, and priority boosters. | Multi-event management repository with upcoming/past event categorization, progress meters, and safe deletion modals. |
 
 ---
 
